@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const userModel = require("../models/userModel");
 const { EncodeToken } = require("../utility/TokenHelper");
+const { COOKIE_EXPIRE_TIME } = require("../config/config");
 const ObjectId = mongoose.Types.ObjectId;
 //! Create user
 exports.registration = async (req, res) => {
@@ -43,23 +44,24 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await userModel.findOne({ email });
+
     if (!user)
       return res
-        .status(200)
+        .status(401)
         .json({ success: false, message: "User not found" });
 
     // Compare password
     const isMatch = await user.comparePassword(password);
     if (!isMatch)
       return res
-        .status(200)
+        .status(401)
         .json({ success: false, message: "Invalid credentials" });
 
     if (isMatch) {
       let token = EncodeToken(user.email, user._id, user.role);
 
       let options = {
-        maxAge: process.env.Cookie_Expire_Time,
+        maxAge: COOKIE_EXPIRE_TIME,
         httpOnly: true,
         sameSite: "none",
         secure: true,
@@ -70,17 +72,11 @@ exports.login = async (req, res) => {
       res.status(200).json({
         success: true,
         message: "Login successful",
-        user: {
-          id: user._id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-        },
         token: token,
       });
     }
   } catch (e) {
-    res.status(200).json({ success: false, error: e.toString() });
+    res.status(500).json({ success: false, error: e.toString() });
   }
 };
 
