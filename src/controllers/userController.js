@@ -58,7 +58,7 @@ exports.login = async (req, res) => {
         .json({ success: false, message: "Invalid credentials" });
 
     if (isMatch) {
-      let token = EncodeToken(user.email, user._id, user.role);
+      let token = EncodeToken(user.email, user._id);
 
       let options = {
         maxAge: COOKIE_EXPIRE_TIME,
@@ -68,7 +68,7 @@ exports.login = async (req, res) => {
       };
 
       // Set cookie
-      res.cookie("Token", token, options);
+      res.cookie("token", token, options);
       res.status(200).json({
         success: true,
         message: "Login successful",
@@ -83,57 +83,53 @@ exports.login = async (req, res) => {
 //! Update user
 exports.userUpdate = async (req, res) => {
   try {
-    let email = req.headers.email;
-    const { name, password, img, number } = req.body;
-    const user = await userModel.findOne({ email });
-    if (!user)
+    const prevEmail = req.headers.email;
+    const { email, firstName, lastName, password } = req.body;
+
+    // Find user by previous email
+    const user = await userModel.findOne({ email: prevEmail });
+    if (!user) {
       return res
         .status(404)
         .json({ success: false, message: "User not found" });
-
-    // Generate a salt and hash the new password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    if (!!user === true) {
-      let data = await userModel.updateOne(
-        { email: email },
-        {
-          $set: {
-            name,
-            password: hashedPassword,
-            img,
-            number,
-          },
-        }
-      );
-
-      res.status(200).json({
-        success: true,
-        data: data,
-        message: "Profile update successful.",
-      });
-    } else {
-      res
-        .status(200)
-        .json({ success: false, message: "Email / password not match!" });
     }
-  } catch (error) {
-    if (error.code === 11000) {
-      if (error?.keyPattern?.email) {
-        res.status(200).json({
+
+    // Prepare update fields
+    let updateFields = { email, firstName, lastName, password };
+
+    // If password is provided, validate it manually and hash it
+    if (password) {
+      if (password.length < 6) {
+        return res.status(400).json({
           success: false,
-          message: "Email already exists!",
-        });
-      } else if (error?.keyPattern?.number) {
-        res.status(200).json({
-          success: false,
-          message: "Phone number already exists!",
+          message: "Password must be at least 6 characters long.",
         });
       }
-    } else {
-      res.status(200).json({ success: false, error: error.toString() });
+
+      const salt = await bcrypt.genSalt(10);
+      updateFields.password = await bcrypt.hash(password, salt);
     }
+
+    // Update user
+    await userModel.findOneAndUpdate(
+      { email: prevEmail },
+      { $set: updateFields }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Profile update successful.",
+    });
+  } catch (error) {
+    // Handle duplicate email error
+    if (error.code === 11000 && error.keyPattern?.email) {
+      return res.status(409).json({
+        success: false,
+        message: "Email already exists!",
+      });
+    }
+
+    return res.status(500).json({ success: false, error: error.toString() });
   }
 };
 
