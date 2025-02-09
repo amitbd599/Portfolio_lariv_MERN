@@ -27,5 +27,15 @@ router.get(
   authVerification,
   experienceController.getSingleExperience
 );
+router.delete(
+  "/delete-single-expenses/:id",
+  authVerification,
+  experienceController.deleteSingleExperience
+);
+router.post(
+  "/update-single-expenses/:id",
+  authVerification,
+  experienceController.updateSingleExperience
+);
 
 module.exports = router;

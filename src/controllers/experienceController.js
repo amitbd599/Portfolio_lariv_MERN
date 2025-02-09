@@ -87,3 +87,63 @@ exports.getSingleExperience = async (req, res) => {
     });
   }
 };
+
+// get delete experience
+exports.deleteSingleExperience = async (req, res) => {
+  try {
+    let id = new ObjectId(req.params.id);
+    const result = await experienceModel.deleteOne({ _id: id });
+
+    console.log(result);
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Experience not found.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: result,
+      message: "Experience delete successful.",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.toString(),
+    });
+  }
+};
+
+// get update experience
+exports.updateSingleExperience = async (req, res) => {
+  try {
+    let id = new ObjectId(req.params.id);
+    const { title, subTitle, description, time } = req.body;
+    const result = await experienceModel.updateOne(
+      { _id: id },
+      { title, subTitle, description, time }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Experience not update.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: result,
+      message: "Experience update successful.",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.toString(),
+    });
+  }
+};
