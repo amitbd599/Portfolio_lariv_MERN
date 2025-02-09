@@ -181,7 +181,11 @@ router.post(
 
 // Blog
 router.post("/create-blog", authVerification, blogController.createBlog);
-router.get("/get-all-blog", authVerification, blogController.getAllBlog);
+router.get(
+  "/get-all-blog/:item/:pageNo",
+  authVerification,
+  blogController.getAllBlog
+);
 router.get(
   "/get-single-blog/:id",
   authVerification,

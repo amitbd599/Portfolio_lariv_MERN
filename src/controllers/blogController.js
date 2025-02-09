@@ -32,24 +32,42 @@ exports.createBlog = async (req, res) => {
 // get all blog
 exports.getAllBlog = async (req, res) => {
   try {
-    let project = {
+    const limit = parseInt(req.params.item); // Number of items per page
+    const pageNo = parseInt(req.params.pageNo); // Current page number
+
+    if (isNaN(limit) || isNaN(pageNo)) {
+      return res.status(200).json({ message: "Invalid parameters" });
+    }
+
+    const skipStage = { $skip: (pageNo - 1) * limit };
+    const limitStage = { $limit: limit };
+    const sort = { $sort: { createdAt: -1 } };
+    const projectStage = {
       $project: {
-        _id: 0,
         title: 1,
         category: 1,
         sortDescription: 1,
-        longDescription: 1,
         featureImg: 1,
-        date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+        date: {
+          $dateToString: { format: "%d-%m-%Y", date: "$createdAt" },
+        },
       },
     };
-    const result = await blogModel.aggregate([project]);
+
+    const facet = {
+      $facet: {
+        total: [{ $count: "count" }],
+        blog: [projectStage, skipStage, limitStage],
+      },
+    };
+
+    let result = await blogModel.aggregate([sort, facet]);
 
     return res.status(200).json({
       success: true,
       data: result,
     });
-  } catch (error) {
+  } catch (e) {
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -58,7 +76,7 @@ exports.getAllBlog = async (req, res) => {
   }
 };
 
-// get single blog
+// get single blog with pagination
 exports.getSingleBlog = async (req, res) => {
   try {
     let id = new ObjectId(req.params.id);

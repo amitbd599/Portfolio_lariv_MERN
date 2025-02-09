@@ -9,6 +9,8 @@ module.exports = (req, res, next) => {
   // Token Decode
   let decoded = DecodeToken(token);
 
+  console.log(decoded);
+
   // Request Header Email+UserID Add
   if (decoded === null) {
     return res.status(401).json({ status: false, message: "Unauthorized" });

@@ -1,8 +1,8 @@
 const PORT = 5000;
 const DATABASE = "mongodb://127.0.0.1:27017/lariv";
 const JWT_KEY = "ABC12341241234";
-const JWT_EXPIRE_TIME = 30 * 24 * 60 * 60;
-const COOKIE_EXPIRE_TIME = 30 * 24 * 60 * 60;
+const JWT_EXPIRE_TIME = "30d";
+const COOKIE_EXPIRE_TIME = 2592000; // 30 days
 
 const WEB_CACHE = false;
 const MAX_JSON_SIZE = "10MB";
