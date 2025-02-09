@@ -28,20 +28,20 @@ exports.createEducation = async (req, res) => {
   }
 };
 
-// get all experience
-exports.getAllExperience = async (req, res) => {
+// get all education
+exports.getAllEducation = async (req, res) => {
   try {
     let project = {
       $project: {
         _id: 0,
         title: 1,
-        subTitle: 1,
+        institution: 1,
         description: 1,
         time: 1,
         date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
       },
     };
-    const result = await experienceModel.aggregate([project]);
+    const result = await educationModel.aggregate([project]);
 
     return res.status(200).json({
       success: true,
@@ -56,8 +56,8 @@ exports.getAllExperience = async (req, res) => {
   }
 };
 
-// get single experience
-exports.getSingleExperience = async (req, res) => {
+// get single education
+exports.getSingleEducation = async (req, res) => {
   try {
     let id = new ObjectId(req.params.id);
 
@@ -68,13 +68,13 @@ exports.getSingleExperience = async (req, res) => {
       $project: {
         _id: 0,
         title: 1,
-        subTitle: 1,
+        institution: 1,
         description: 1,
         time: 1,
         date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
       },
     };
-    const result = await experienceModel.aggregate([match, project]);
+    const result = await educationModel.aggregate([match, project]);
 
     return res.status(200).json({
       success: true,
@@ -89,25 +89,23 @@ exports.getSingleExperience = async (req, res) => {
   }
 };
 
-// get delete experience
-exports.deleteSingleExperience = async (req, res) => {
+// get delete education
+exports.deleteSingleEducation = async (req, res) => {
   try {
     let id = new ObjectId(req.params.id);
-    const result = await experienceModel.deleteOne({ _id: id });
-
-    console.log(result);
+    const result = await educationModel.deleteOne({ _id: id });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({
         success: false,
-        message: "Experience not found.",
+        message: "Education not found.",
       });
     }
 
     return res.status(200).json({
       success: true,
       data: result,
-      message: "Experience delete successful.",
+      message: "Education delete successful.",
     });
   } catch (error) {
     return res.status(500).json({
@@ -118,12 +116,12 @@ exports.deleteSingleExperience = async (req, res) => {
   }
 };
 
-// get update experience
-exports.updateSingleExperience = async (req, res) => {
+// get update education
+exports.updateSingleEducation = async (req, res) => {
   try {
     let id = new ObjectId(req.params.id);
     const { title, subTitle, description, time } = req.body;
-    const result = await experienceModel.updateOne(
+    const result = await educationModel.updateOne(
       { _id: id },
       { title, subTitle, description, time }
     );
@@ -131,14 +129,14 @@ exports.updateSingleExperience = async (req, res) => {
     if (result.modifiedCount === 0) {
       return res.status(404).json({
         success: false,
-        message: "Experience not update.",
+        message: "Education not update.",
       });
     }
 
     return res.status(200).json({
       success: true,
       data: result,
-      message: "Experience update successful.",
+      message: "Education update successful.",
     });
   } catch (error) {
     return res.status(500).json({

@@ -46,24 +46,24 @@ router.post(
   educationController.createEducation
 );
 router.get(
-  "/get-all-expenses",
+  "/get-all-education",
   authVerification,
-  experienceController.getAllExperience
+  educationController.getAllEducation
 );
 router.get(
-  "/get-single-expenses/:id",
+  "/get-single-education/:id",
   authVerification,
-  experienceController.getSingleExperience
+  educationController.getSingleEducation
 );
 router.delete(
-  "/delete-single-expenses/:id",
+  "/delete-single-education/:id",
   authVerification,
-  experienceController.deleteSingleExperience
+  educationController.deleteSingleEducation
 );
 router.post(
-  "/update-single-expenses/:id",
+  "/update-single-education/:id",
   authVerification,
-  experienceController.updateSingleExperience
+  educationController.updateSingleEducation
 );
 
 module.exports = router;
