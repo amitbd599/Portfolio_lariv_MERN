@@ -66,10 +66,10 @@ exports.getSinglePortfolio = async (req, res) => {
     let project = {
       $project: {
         _id: 0,
-        subject: 1,
-        position: 1,
-        percent: 1,
-        time: 1,
+        title: 1,
+        category: 1,
+        link: 1,
+        img: 1,
         date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
       },
     };
