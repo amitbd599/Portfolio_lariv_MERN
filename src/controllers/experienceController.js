@@ -1,4 +1,6 @@
+const mongoose = require("mongoose");
 const experienceModel = require("../models/experienceModel");
+const ObjectId = mongoose.Types.ObjectId;
 
 // create experience
 exports.createExperience = async (req, res) => {
@@ -39,6 +41,39 @@ exports.getAllExperience = async (req, res) => {
       },
     };
     const result = await experienceModel.aggregate([project]);
+
+    return res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.toString(),
+    });
+  }
+};
+
+// get single experience
+exports.getSingleExperience = async (req, res) => {
+  try {
+    let id = new ObjectId(req.params.id);
+
+    let match = {
+      $match: { _id: id },
+    };
+    let project = {
+      $project: {
+        _id: 0,
+        title: 1,
+        subTitle: 1,
+        description: 1,
+        time: 1,
+        date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+      },
+    };
+    const result = await experienceModel.aggregate([match, project]);
 
     return res.status(200).json({
       success: true,

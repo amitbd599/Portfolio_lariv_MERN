@@ -22,5 +22,10 @@ router.get(
   authVerification,
   experienceController.getAllExperience
 );
+router.get(
+  "/get-single-expenses/:id",
+  authVerification,
+  experienceController.getSingleExperience
+);
 
 module.exports = router;
