@@ -66,9 +66,9 @@ exports.getSingleAdvantages = async (req, res) => {
     let project = {
       $project: {
         _id: 0,
-        title: 1,
-        institution: 1,
-        description: 1,
+        subject: 1,
+        position: 1,
+        percent: 1,
         time: 1,
         date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
       },
