@@ -1,6 +1,7 @@
 const express = require("express");
 const userController = require("../controllers/userController");
 const experienceController = require("../controllers/experienceController");
+const educationController = require("../controllers/educationController");
 const authVerification = require("../middlewares/authVerification");
 const router = express.Router();
 
@@ -16,6 +17,33 @@ router.post(
   "/create-expenses",
   authVerification,
   experienceController.createExperience
+);
+router.get(
+  "/get-all-expenses",
+  authVerification,
+  experienceController.getAllExperience
+);
+router.get(
+  "/get-single-expenses/:id",
+  authVerification,
+  experienceController.getSingleExperience
+);
+router.delete(
+  "/delete-single-expenses/:id",
+  authVerification,
+  experienceController.deleteSingleExperience
+);
+router.post(
+  "/update-single-expenses/:id",
+  authVerification,
+  experienceController.updateSingleExperience
+);
+
+// Education
+router.post(
+  "/create-education",
+  authVerification,
+  educationController.createEducation
 );
 router.get(
   "/get-all-expenses",
