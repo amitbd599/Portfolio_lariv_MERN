@@ -5,6 +5,7 @@ const educationController = require("../controllers/educationController");
 const advantagesController = require("../controllers/advantagesController");
 const portfolioController = require("../controllers/portfolioController");
 const serviceController = require("../controllers/serviceController");
+const testimonialController = require("../controllers/testimonialController");
 const authVerification = require("../middlewares/authVerification");
 const router = express.Router();
 
@@ -148,6 +149,33 @@ router.post(
   "/update-single-portfolio/:id",
   authVerification,
   portfolioController.updateSinglePortfolio
+);
+
+// Testimonial
+router.post(
+  "/create-testimonial",
+  authVerification,
+  testimonialController.createTestimonial
+);
+router.get(
+  "/get-all-testimonial",
+  authVerification,
+  testimonialController.getAllTestimonial
+);
+router.get(
+  "/get-single-testimonial/:id",
+  authVerification,
+  testimonialController.getSingleTestimonial
+);
+router.delete(
+  "/delete-single-testimonial/:id",
+  authVerification,
+  testimonialController.deleteSingleTestimonial
+);
+router.post(
+  "/update-single-testimonial/:id",
+  authVerification,
+  testimonialController.updateSingleTestimonial
 );
 
 module.exports = router;
