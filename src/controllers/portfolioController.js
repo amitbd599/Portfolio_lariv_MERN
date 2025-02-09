@@ -88,7 +88,7 @@ exports.getSinglePortfolio = async (req, res) => {
   }
 };
 
-// get delete portfolio
+//  delete portfolio
 exports.deleteSinglePortfolio = async (req, res) => {
   try {
     let id = new ObjectId(req.params.id);
@@ -119,10 +119,10 @@ exports.deleteSinglePortfolio = async (req, res) => {
 exports.updateSinglePortfolio = async (req, res) => {
   try {
     let id = new ObjectId(req.params.id);
-    const { title, subTitle, description, time } = req.body;
+    const { title, category, link, img } = req.body;
     const result = await portfolioModel.updateOne(
       { _id: id },
-      { title, subTitle, description, time }
+      { title, category, link, img }
     );
 
     if (result.modifiedCount === 0) {
