@@ -3,6 +3,7 @@ const userController = require("../controllers/userController");
 const experienceController = require("../controllers/experienceController");
 const educationController = require("../controllers/educationController");
 const advantagesController = require("../controllers/advantagesController");
+const portfolioController = require("../controllers/portfolioController");
 const authVerification = require("../middlewares/authVerification");
 const router = express.Router();
 
@@ -92,6 +93,33 @@ router.post(
   "/update-single-advantages/:id",
   authVerification,
   advantagesController.updateSingleAdvantages
+);
+
+// Portfolio
+router.post(
+  "/create-portfolio",
+  authVerification,
+  portfolioController.createPortfolio
+);
+router.get(
+  "/get-all-portfolio",
+  authVerification,
+  portfolioController.getAllPortfolio
+);
+router.get(
+  "/get-single-portfolio/:id",
+  authVerification,
+  portfolioController.getSinglePortfolio
+);
+router.delete(
+  "/delete-single-portfolio/:id",
+  authVerification,
+  portfolioController.deleteSinglePortfolio
+);
+router.post(
+  "/update-single-portfolio/:id",
+  authVerification,
+  portfolioController.updateSinglePortfolio
 );
 
 module.exports = router;
