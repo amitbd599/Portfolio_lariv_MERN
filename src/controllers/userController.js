@@ -133,44 +133,7 @@ exports.userUpdate = async (req, res) => {
   }
 };
 
-//! Update user by id
-exports.userUpdateById = async (req, res) => {
-  try {
-    const id = new ObjectId(req.params.id);
-    const { role } = req.body;
-    const user = await userModel.findOne({ _id: id });
-
-    if (!user)
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
-
-    if (!!user === true) {
-      let data = await userModel.updateOne(
-        { _id: id },
-        {
-          $set: {
-            role,
-          },
-        }
-      );
-
-      res.status(200).json({
-        success: true,
-        data: data,
-        message: "User role update successful.",
-      });
-    } else {
-      res
-        .status(200)
-        .json({ success: false, message: "User role update unsuccessful." });
-    }
-  } catch (e) {
-    res.status(200).json({ success: false, data: e.toString() });
-  }
-};
-
-//! get User
+//! user Read
 exports.userRead = async (req, res) => {
   try {
     let email = req.headers.email;
@@ -183,12 +146,14 @@ exports.userRead = async (req, res) => {
     let project = {
       $project: {
         password: 0,
+        createdAt: 0,
+        updatedAt: 0,
       },
     };
     let data = await userModel.aggregate([MatchStage, project]);
     res.status(200).json({ success: true, data: data[0] });
   } catch (e) {
-    res.status(200).json({ success: false, error: e.toString() });
+    res.status(500).json({ success: false, error: error.toString() });
   }
 };
 
