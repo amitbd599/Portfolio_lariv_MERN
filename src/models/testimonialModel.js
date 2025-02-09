@@ -24,6 +24,6 @@ const DataSchema = new mongoose.Schema(
   }
 );
 
-const testimonialModel = mongoose.model("testimonial", DataSchema);
+const testimonialModel = mongoose.model("testimonials", DataSchema);
 
 module.exports = testimonialModel;

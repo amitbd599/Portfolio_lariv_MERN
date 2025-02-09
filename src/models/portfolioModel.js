@@ -24,6 +24,6 @@ const DataSchema = new mongoose.Schema(
   }
 );
 
-const portfolioModel = mongoose.model("portfolio", DataSchema);
+const portfolioModel = mongoose.model("portfolios", DataSchema);
 
 module.exports = portfolioModel;

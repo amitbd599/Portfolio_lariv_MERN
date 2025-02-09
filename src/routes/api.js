@@ -6,6 +6,7 @@ const advantagesController = require("../controllers/advantagesController");
 const portfolioController = require("../controllers/portfolioController");
 const serviceController = require("../controllers/serviceController");
 const testimonialController = require("../controllers/testimonialController");
+const blogController = require("../controllers/blogController");
 const authVerification = require("../middlewares/authVerification");
 const router = express.Router();
 
@@ -176,6 +177,25 @@ router.post(
   "/update-single-testimonial/:id",
   authVerification,
   testimonialController.updateSingleTestimonial
+);
+
+// Blog
+router.post("/create-blog", authVerification, blogController.createBlog);
+router.get("/get-all-blog", authVerification, blogController.getAllBlog);
+router.get(
+  "/get-single-blog/:id",
+  authVerification,
+  blogController.getSingleBlog
+);
+router.delete(
+  "/delete-single-blog/:id",
+  authVerification,
+  blogController.deleteSingleBlog
+);
+router.post(
+  "/update-single-blog/:id",
+  authVerification,
+  blogController.updateSingleBlog
 );
 
 module.exports = router;

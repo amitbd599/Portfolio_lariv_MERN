@@ -5,11 +5,19 @@ const DataSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    description: {
+    category: {
       type: String,
       required: true,
     },
-    img: {
+    sortDescription: {
+      type: String,
+      required: true,
+    },
+    longDescription: {
+      type: String,
+      required: true,
+    },
+    featureImg: {
       type: String,
       required: true,
     },
@@ -20,6 +28,6 @@ const DataSchema = new mongoose.Schema(
   }
 );
 
-const serviceModel = mongoose.model("services", DataSchema);
+const blogModel = mongoose.model("blogs", DataSchema);
 
-module.exports = serviceModel;
+module.exports = blogModel;
