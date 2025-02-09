@@ -4,6 +4,7 @@ const experienceController = require("../controllers/experienceController");
 const educationController = require("../controllers/educationController");
 const advantagesController = require("../controllers/advantagesController");
 const portfolioController = require("../controllers/portfolioController");
+const serviceController = require("../controllers/serviceController");
 const authVerification = require("../middlewares/authVerification");
 const router = express.Router();
 
@@ -96,6 +97,33 @@ router.post(
 );
 
 // Portfolio
+router.post(
+  "/create-service",
+  authVerification,
+  serviceController.createService
+);
+router.get(
+  "/get-all-service",
+  authVerification,
+  serviceController.getAllService
+);
+router.get(
+  "/get-single-service/:id",
+  authVerification,
+  serviceController.getSingleService
+);
+router.delete(
+  "/delete-single-service/:id",
+  authVerification,
+  serviceController.deleteSingleService
+);
+router.post(
+  "/update-single-service/:id",
+  authVerification,
+  serviceController.updateSingleService
+);
+
+// Service
 router.post(
   "/create-portfolio",
   authVerification,
