@@ -7,6 +7,7 @@ const portfolioController = require("../controllers/portfolioController");
 const serviceController = require("../controllers/serviceController");
 const testimonialController = require("../controllers/testimonialController");
 const blogController = require("../controllers/blogController");
+const commentController = require("../controllers/commentController");
 const authVerification = require("../middlewares/authVerification");
 const router = express.Router();
 
@@ -182,7 +183,7 @@ router.post(
 // Blog
 router.post("/create-blog", authVerification, blogController.createBlog);
 router.get(
-  "/get-all-blog/:item/:pageNo",
+  "/get-all-blog/:limit/:pageNo",
   authVerification,
   blogController.getAllBlog
 );
@@ -200,6 +201,18 @@ router.post(
   "/update-single-blog/:id",
   authVerification,
   blogController.updateSingleBlog
+);
+
+// Comment
+router.post(
+  "/create-comment",
+  authVerification,
+  commentController.createComment
+);
+router.get(
+  "/get-comment-by-blog/:blogId",
+  authVerification,
+  commentController.getCommentsByBlog
 );
 
 module.exports = router;

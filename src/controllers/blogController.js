@@ -29,10 +29,10 @@ exports.createBlog = async (req, res) => {
   }
 };
 
-// get all blog
+// get all blog with pagination
 exports.getAllBlog = async (req, res) => {
   try {
-    const limit = parseInt(req.params.item); // Number of items per page
+    const limit = parseInt(req.params.limit); // Number of items per page
     const pageNo = parseInt(req.params.pageNo); // Current page number
 
     if (isNaN(limit) || isNaN(pageNo)) {
@@ -76,7 +76,7 @@ exports.getAllBlog = async (req, res) => {
   }
 };
 
-// get single blog with pagination
+// get single blog
 exports.getSingleBlog = async (req, res) => {
   try {
     let id = new ObjectId(req.params.id);
