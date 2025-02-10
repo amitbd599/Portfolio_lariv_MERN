@@ -19,6 +19,12 @@ exports.createAdvantages = async (req, res) => {
       message: "Advantages add successful.",
     });
   } catch (error) {
+    if (error.name === "ValidationError") {
+      // Mongoose validation errors
+      const messages = Object.values(error.errors).map((err) => err.message);
+      return res.status(400).json({ success: false, message: messages[0] });
+    }
+
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -119,10 +125,11 @@ exports.deleteSingleAdvantages = async (req, res) => {
 exports.updateSingleAdvantages = async (req, res) => {
   try {
     let id = new ObjectId(req.params.id);
-    const { title, subTitle, description, time } = req.body;
-    const result = await advantagesModel.updateOne(
-      { _id: id },
-      { title, subTitle, description, time }
+    const { subject, position, percent, time } = req.body;
+    const result = await advantagesModel.findByIdAndUpdate(
+      id,
+      { subject, position, percent, time },
+      { new: true, runValidators: true } // Ensures validation is triggered
     );
 
     if (result.modifiedCount === 0) {
@@ -138,6 +145,12 @@ exports.updateSingleAdvantages = async (req, res) => {
       message: "Advantages update successful.",
     });
   } catch (error) {
+    if (error.name === "ValidationError") {
+      // Mongoose validation errors
+      const messages = Object.values(error.errors).map((err) => err.message);
+      return res.status(400).json({ success: false, message: messages[0] });
+    }
+
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",

@@ -6,39 +6,26 @@ const ObjectId = mongoose.Types.ObjectId;
 exports.createComment = async (req, res) => {
   try {
     const { blogId, userName, commentText, parentId } = req.body;
-    if (!blogId || !userName || !commentText) {
-      return res
-        .status(400)
-        .json({ success: false, message: "All fields are required" });
-    }
 
-    // const result = await commentsModel.create({
-    //   blogId,
-    //   userName,
-    //   commentText,
-    //   parentId: parentId || null,
-    // });
-
-    // return res.status(201).json({
-    //   success: true,
-    //   data: result,
-    //   message: "Comment add successful.",
-    // });
-
-    const newComment = new commentsModel({
+    const result = await commentsModel.create({
       blogId,
       userName,
       commentText,
       parentId: parentId || null,
     });
 
-    await newComment.save();
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
-      message: "Comment added successfully",
-      comment: newComment,
+      data: result,
+      message: "Comment add successful.",
     });
   } catch (error) {
+    if (error.name === "ValidationError") {
+      // Mongoose validation errors
+      const messages = Object.values(error.errors).map((err) => err.message);
+      return res.status(400).json({ success: false, message: messages[0] });
+    }
+
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -54,7 +41,7 @@ exports.getCommentsByBlog = async (req, res) => {
 
     // Match comments for the given blogId (Only Top-Level)
     let match = {
-      $match: { blogId: new mongoose.Types.ObjectId(blogId), parentId: null },
+      $match: { blogId: new ObjectId(blogId), parentId: null },
     };
     // Lookup for replies
     let joinWithParentId = {
