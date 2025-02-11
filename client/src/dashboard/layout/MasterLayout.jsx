@@ -8,7 +8,7 @@ import {
   FaRegCircleDot,
   FaRegEnvelope,
 } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {
   Menu,
   MenuHandler,
@@ -205,7 +205,21 @@ const MasterLayout = ({ children }) => {
           >
             <div className='relative flex-1 flex flex-col min-h-0 border-r border-gray-200 bg-white pt-0'>
               <div className='flex-1 flex flex-col pt-5 pb-4 overflow-y-auto'>
-                <div className='flex-1 px-3 bg-white  space-y-1'>
+                <div className='flex flex-col items-center mt-6 -mx-2'>
+                  <img
+                    className='object-cover w-24 h-24 mx-2 rounded-full'
+                    src='https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
+                    alt='avatar'
+                  />
+                  <h4 className='mx-2 mt-2 font-medium text-gray-800 dark:text-gray-200'>
+                    John Doe
+                  </h4>
+                  <p className='mx-2 mt-1 text-sm font-medium text-gray-600 dark:text-gray-400'>
+                    john@example.com
+                  </p>
+                </div>
+                <div className='flex-1 px-3 bg-white pt-3 space-y-1'>
+                  <hr />
                   <ul className='space-y-2 pb-2'>
                     <li>
                       <Link
@@ -239,13 +253,17 @@ const MasterLayout = ({ children }) => {
                         </li>
                         {item.route.map((route, index) => (
                           <li className='ps-5' key={index}>
-                            <Link
+                            <NavLink
                               to={route.path}
-                              className='text-base text-gray-900 font-normal rounded-lg flex items-center p-2 hover:bg-gray-100 group'
+                              className={({ isActive }) =>
+                                `text-base text-gray-900 font-normal rounded-lg flex items-center p-2 hover:bg-gray-100 group ${
+                                  isActive && "bg-gray-300 hover:bg-gray-300"
+                                }`
+                              }
                             >
                               <span>{route.icon}</span>
                               <span className='ml-3'>{route.name} </span>
-                            </Link>
+                            </NavLink>
                           </li>
                         ))}
                       </ul>
@@ -261,7 +279,9 @@ const MasterLayout = ({ children }) => {
           />
 
           {/* Inner content */}
-          <div className='pl-[256px] min-h-screen'>{children}</div>
+          <div className='pl-[256px] pt-[20px] min-h-screen text-[#333]  border w-full'>
+            <div className='p-[20px]'>{children}</div>
+          </div>
         </div>
       </div>
     </>
