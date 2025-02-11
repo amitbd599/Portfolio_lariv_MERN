@@ -18,29 +18,29 @@ router.post("/user-update", authVerification, userController.userUpdate);
 router.get("/user-read", authVerification, userController.userRead);
 router.get("/logout", authVerification, userController.logout);
 
-// Expenses
+// experience
 router.post(
-  "/create-expenses",
+  "/create-experience",
   authVerification,
   experienceController.createExperience
 );
 router.get(
-  "/get-all-expenses",
+  "/get-all-experience",
   authVerification,
   experienceController.getAllExperience
 );
 router.get(
-  "/get-single-expenses/:id",
+  "/get-single-experience/:id",
   authVerification,
   experienceController.getSingleExperience
 );
 router.delete(
-  "/delete-single-expenses/:id",
+  "/delete-single-experience/:id",
   authVerification,
   experienceController.deleteSingleExperience
 );
 router.post(
-  "/update-single-expenses/:id",
+  "/update-single-experience/:id",
   authVerification,
   experienceController.updateSingleExperience
 );

@@ -11,6 +11,7 @@ import BlogDetails from "./pages/BlogDetails";
 import Error from "./pages/Error";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import DashboardHomePage from "./dashboard/pages/DashboardHomePage";
 function App() {
   useEffect(() => {
     AOS.init({
@@ -33,6 +34,9 @@ function App() {
         <Route exact path='/blog-details' element={<BlogDetails />} />
         <Route exact path='/contact' element={<Contact />} />
         <Route exact path='*' element={<Error />} />
+
+        {/* Dashboard */}
+        <Route exact path='/dashboard' element={<DashboardHomePage />} />
       </Routes>
     </BrowserRouter>
   );
