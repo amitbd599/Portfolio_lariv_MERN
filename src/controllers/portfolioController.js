@@ -19,6 +19,12 @@ exports.createPortfolio = async (req, res) => {
       message: "Portfolio add successful.",
     });
   } catch (error) {
+    if (error.name === "ValidationError") {
+      // Mongoose validation errors
+      const messages = Object.values(error.errors).map((err) => err.message);
+      return res.status(400).json({ success: false, message: messages[0] });
+    }
+
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -120,9 +126,10 @@ exports.updateSinglePortfolio = async (req, res) => {
   try {
     let id = new ObjectId(req.params.id);
     const { title, category, link, img } = req.body;
-    const result = await portfolioModel.updateOne(
+    const result = await portfolioModel.findByIdAndUpdate(
       { _id: id },
-      { title, category, link, img }
+      { title, category, link, img },
+      { new: true, runValidators: true } // Ensures validation is triggered
     );
 
     if (result.modifiedCount === 0) {
@@ -138,6 +145,12 @@ exports.updateSinglePortfolio = async (req, res) => {
       message: "Portfolio update successful.",
     });
   } catch (error) {
+    if (error.name === "ValidationError") {
+      // Mongoose validation errors
+      const messages = Object.values(error.errors).map((err) => err.message);
+      return res.status(400).json({ success: false, message: messages[0] });
+    }
+
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
