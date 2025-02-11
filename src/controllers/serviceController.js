@@ -18,6 +18,12 @@ exports.createService = async (req, res) => {
       message: "Service add successful.",
     });
   } catch (error) {
+    if (error.name === "ValidationError") {
+      // Mongoose validation errors
+      const messages = Object.values(error.errors).map((err) => err.message);
+      return res.status(400).json({ success: false, message: messages[0] });
+    }
+
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -117,9 +123,10 @@ exports.updateSingleService = async (req, res) => {
   try {
     let id = new ObjectId(req.params.id);
     const { title, description, img } = req.body;
-    const result = await serviceModel.updateOne(
+    const result = await serviceModel.findByIdAndUpdate(
       { _id: id },
-      { title, description, img }
+      { title, description, img },
+      { new: true, runValidators: true } // Ensures validation is triggered
     );
 
     if (result.modifiedCount === 0) {
@@ -135,6 +142,12 @@ exports.updateSingleService = async (req, res) => {
       message: "Service update successful.",
     });
   } catch (error) {
+    if (error.name === "ValidationError") {
+      // Mongoose validation errors
+      const messages = Object.values(error.errors).map((err) => err.message);
+      return res.status(400).json({ success: false, message: messages[0] });
+    }
+
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
