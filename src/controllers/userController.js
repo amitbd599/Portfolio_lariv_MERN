@@ -87,6 +87,7 @@ exports.login = async (req, res) => {
 exports.userUpdate = async (req, res) => {
   try {
     const prevEmail = req.headers.email;
+    const user_id = req.headers.user_id;
     const { email, firstName, lastName, password } = req.body;
 
     // Find user by previous email
@@ -114,22 +115,30 @@ exports.userUpdate = async (req, res) => {
     }
 
     // Update user
-    await userModel.findOneAndUpdate(
-      { email: prevEmail },
-      { $set: updateFields }
+    let result = await userModel.findByIdAndUpdate(
+      { _id: user_id },
+      updateFields,
+      { new: true, runValidators: true } // Ensures validation is triggered
     );
 
     return res.status(200).json({
       success: true,
       message: "Profile update successful.",
+      result,
     });
   } catch (error) {
     // Handle duplicate email error
     if (error.code === 11000 && error.keyPattern?.email) {
-      res.status(409).json({
+      return res.status(409).json({
         success: false,
         message: "Email already exists!",
       });
+    }
+
+    if (error.name === "ValidationError") {
+      // Mongoose validation errors
+      const messages = Object.values(error.errors).map((err) => err.message);
+      return res.status(400).json({ success: false, message: messages[0] });
     }
 
     return res.status(500).json({
