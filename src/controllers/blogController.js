@@ -21,6 +21,12 @@ exports.createBlog = async (req, res) => {
       message: "Blog add successful.",
     });
   } catch (error) {
+    if (error.name === "ValidationError") {
+      // Mongoose validation errors
+      const messages = Object.values(error.errors).map((err) => err.message);
+      return res.status(400).json({ success: false, message: messages[0] });
+    }
+
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
@@ -143,9 +149,10 @@ exports.updateSingleBlog = async (req, res) => {
     let id = new ObjectId(req.params.id);
     const { title, category, sortDescription, longDescription, featureImg } =
       req.body;
-    const result = await blogModel.updateOne(
+    const result = await blogModel.findByIdAndUpdate(
       { _id: id },
-      { title, category, sortDescription, longDescription, featureImg }
+      { title, category, sortDescription, longDescription, featureImg },
+      { new: true, runValidators: true } // Ensures validation is triggered
     );
 
     if (result.modifiedCount === 0) {
@@ -161,6 +168,11 @@ exports.updateSingleBlog = async (req, res) => {
       message: "Blog update successful.",
     });
   } catch (error) {
+    if (error.name === "ValidationError") {
+      // Mongoose validation errors
+      const messages = Object.values(error.errors).map((err) => err.message);
+      return res.status(400).json({ success: false, message: messages[0] });
+    }
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",

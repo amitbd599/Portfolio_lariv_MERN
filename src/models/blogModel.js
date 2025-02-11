@@ -3,23 +3,27 @@ const DataSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: true,
+      required: [true, "Title cannot be empty!"],
+      minlength: [3, "Title must be at least 3 characters long"],
     },
     category: {
       type: String,
-      required: true,
+      required: [true, "Category cannot be empty!"],
+      minlength: [3, "Category must be at least 3 characters long"],
     },
     sortDescription: {
       type: String,
-      required: true,
+      required: [true, "Sort Description cannot be empty!"],
+      minlength: [3, "Sort Description must be at least 3 characters long"],
     },
     longDescription: {
       type: String,
-      required: true,
+      required: [true, "Long Description cannot be empty!"],
+      minlength: [3, "Long Description must be at least 3 characters long"],
     },
     featureImg: {
       type: String,
-      required: true,
+      required: [true, "Image cannot be empty!"],
     },
   },
   {
