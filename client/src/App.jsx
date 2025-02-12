@@ -16,6 +16,17 @@ import MediaPage from "./dashboard/pages/MediaPage";
 import CreateExpensesPage from "./dashboard/pages/CreateExpensesPage";
 import AllExpensesPage from "./dashboard/pages/AllExpensesPage";
 import CreateEducationPage from "./dashboard/pages/CreateEducationPage";
+import AllEducationPage from "./dashboard/pages/AllEducationPage";
+import CreateAdvantagesPage from "./dashboard/pages/CreateAdvantagesPage";
+import AllAdvantagesPage from "./dashboard/pages/AllAdvantagesPage";
+import CreatePortfolioPage from "./dashboard/pages/CreatePortfolioPage";
+import AllPortfolioPage from "./dashboard/pages/AllPortfolioPage";
+import CreateServicePage from "./dashboard/pages/CreateServicePage";
+import AllServicePage from "./dashboard/pages/AllServicePage";
+import CreateTestimonialPage from "./dashboard/pages/CreateTestimonialPage";
+import AllTestimonialPage from "./dashboard/pages/AllTestimonialPage";
+import CreateBlogPage from "./dashboard/pages/CreateBlogPage";
+import AllBlogPage from "./dashboard/pages/AllBlogPage";
 function App() {
   useEffect(() => {
     AOS.init({
@@ -49,6 +60,29 @@ function App() {
           path='/create-education'
           element={<CreateEducationPage />}
         />
+        <Route exact path='/all-education' element={<AllEducationPage />} />
+        <Route
+          exact
+          path='/create-advantages'
+          element={<CreateAdvantagesPage />}
+        />
+        <Route exact path='/all-advantages' element={<AllAdvantagesPage />} />
+        <Route
+          exact
+          path='/create-portfolio'
+          element={<CreatePortfolioPage />}
+        />
+        <Route exact path='/all-portfolio' element={<AllPortfolioPage />} />
+        <Route exact path='/create-service' element={<CreateServicePage />} />
+        <Route exact path='/all-service' element={<AllServicePage />} />
+        <Route
+          exact
+          path='/create-testimonial'
+          element={<CreateTestimonialPage />}
+        />
+        <Route exact path='/all-testimonial' element={<AllTestimonialPage />} />
+        <Route exact path='/create-blog' element={<CreateBlogPage />} />
+        <Route exact path='/all-blog' element={<AllBlogPage />} />
       </Routes>
     </BrowserRouter>
   );
