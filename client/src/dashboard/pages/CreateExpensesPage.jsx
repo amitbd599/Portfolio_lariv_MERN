@@ -1,11 +1,11 @@
-import CreateExpenses from "../components/CreateExperience";
+import CreateExperience from "../components/CreateExperience";
 import MasterLayout from "../layout/MasterLayout";
 
 const CreateExpensesPage = () => {
   return (
     <MasterLayout>
-      {/* CreateExpenses */}
-      <CreateExpenses />
+      {/* CreateExperience */}
+      <CreateExperience />
     </MasterLayout>
   );
 };

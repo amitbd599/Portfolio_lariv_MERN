@@ -204,7 +204,7 @@ const MasterLayout = ({ children }) => {
             aria-label='Sidebar'
           >
             <div className='relative flex-1 flex flex-col min-h-0 border-r border-gray-200 bg-white pt-0'>
-              <div className='flex-1 flex flex-col pt-5 pb-4 overflow-y-auto'>
+              <div className='flex-1 flex flex-col pt-5 pb-4 overflow-x-hidden'>
                 <div className='flex flex-col items-center mt-6 -mx-2'>
                   <img
                     className='object-cover w-24 h-24 mx-2 rounded-full'
@@ -222,22 +222,30 @@ const MasterLayout = ({ children }) => {
                   <hr />
                   <ul className='space-y-2 pb-2'>
                     <li>
-                      <Link
+                      <NavLink
                         to='/dashboard'
-                        className='text-base text-gray-900 font-normal rounded-lg flex items-center p-2 hover:bg-gray-100 group'
+                        className={({ isActive }) =>
+                          `text-base text-gray-900 font-normal rounded-lg flex items-center p-2 hover:bg-gray-100 group ${
+                            isActive && "bg-gray-300 hover:bg-gray-300"
+                          }`
+                        }
                       >
                         <FaHouseChimney />
                         <span className='ml-3'>Dashboard</span>
-                      </Link>
+                      </NavLink>
                     </li>
                     <li>
-                      <Link
+                      <NavLink
                         to='/media-center'
-                        className='text-base text-gray-900 font-normal rounded-lg flex items-center p-2 hover:bg-gray-100 group'
+                        className={({ isActive }) =>
+                          `text-base text-gray-900 font-normal rounded-lg flex items-center p-2 hover:bg-gray-100 group ${
+                            isActive && "bg-gray-300 hover:bg-gray-300"
+                          }`
+                        }
                       >
                         <FaFile />
                         <span className='ml-3'>Media File</span>
-                      </Link>
+                      </NavLink>
                     </li>
                   </ul>
 

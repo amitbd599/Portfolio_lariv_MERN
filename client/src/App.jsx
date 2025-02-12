@@ -15,6 +15,7 @@ import DashboardHomePage from "./dashboard/pages/DashboardHomePage";
 import MediaPage from "./dashboard/pages/MediaPage";
 import CreateExpensesPage from "./dashboard/pages/CreateExpensesPage";
 import AllExpensesPage from "./dashboard/pages/AllExpensesPage";
+import CreateEducationPage from "./dashboard/pages/CreateEducationPage";
 function App() {
   useEffect(() => {
     AOS.init({
@@ -43,6 +44,11 @@ function App() {
         <Route exact path='/media-center' element={<MediaPage />} />
         <Route exact path='/create-expenses' element={<CreateExpensesPage />} />
         <Route exact path='/all-expenses' element={<AllExpensesPage />} />
+        <Route
+          exact
+          path='/create-education'
+          element={<CreateEducationPage />}
+        />
       </Routes>
     </BrowserRouter>
   );
