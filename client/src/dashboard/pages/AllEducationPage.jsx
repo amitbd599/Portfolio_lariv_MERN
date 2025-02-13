@@ -1,4 +1,4 @@
-import AllEducation from "../components/AllEducation";
+import AllEducation from "../components/education/AllEducation";
 import MasterLayout from "../layout/MasterLayout";
 
 const AllEducationPage = () => {

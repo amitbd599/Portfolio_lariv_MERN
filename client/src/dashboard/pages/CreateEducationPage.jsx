@@ -1,4 +1,4 @@
-import CreateEducation from "../components/CreateEducation";
+import CreateEducation from "../components/education/CreateEducation";
 import MasterLayout from "../layout/MasterLayout";
 
 const CreateEducationPage = () => {

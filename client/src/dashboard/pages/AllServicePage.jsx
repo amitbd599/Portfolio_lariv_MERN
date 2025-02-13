@@ -1,4 +1,4 @@
-import AllService from "../components/AllService";
+import AllService from "../components/service/AllService";
 import MasterLayout from "../layout/MasterLayout";
 
 const AllServicePage = () => {

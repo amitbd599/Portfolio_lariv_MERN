@@ -1,4 +1,4 @@
-import Media from "../components/Media";
+import Media from "../components/media/Media";
 import MasterLayout from "../layout/MasterLayout";
 
 const MediaPage = () => {

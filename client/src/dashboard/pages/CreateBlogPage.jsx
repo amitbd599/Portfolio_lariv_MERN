@@ -1,4 +1,4 @@
-import CreateBlog from "../components/CreateBlog";
+import CreateBlog from "../components/blog/CreateBlog";
 import MasterLayout from "../layout/MasterLayout";
 
 const CreateBlogPage = () => {

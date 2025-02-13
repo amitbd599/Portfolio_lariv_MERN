@@ -1,4 +1,4 @@
-import AllAdvantages from "../components/AllAdvantages";
+import AllAdvantages from "../components/advantages/AllAdvantages";
 import MasterLayout from "../layout/MasterLayout";
 
 const AllAdvantagesPage = () => {

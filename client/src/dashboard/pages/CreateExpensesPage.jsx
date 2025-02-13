@@ -1,4 +1,4 @@
-import CreateExperience from "../components/CreateExperience";
+import CreateExperience from "../components/experience/CreateExperience";
 import MasterLayout from "../layout/MasterLayout";
 
 const CreateExpensesPage = () => {

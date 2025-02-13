@@ -1,4 +1,4 @@
-import AllTestimonial from "../components/AllTestimonial";
+import AllTestimonial from "../components/testimonial/AllTestimonial";
 import MasterLayout from "../layout/MasterLayout";
 
 const AllTestimonialPage = () => {

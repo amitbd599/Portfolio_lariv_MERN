@@ -1,4 +1,4 @@
-import CreateService from "../components/CreateService";
+import CreateService from "../components/service/CreateService";
 import MasterLayout from "../layout/MasterLayout";
 
 const CreateServicePage = () => {

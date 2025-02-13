@@ -1,4 +1,4 @@
-import EditProfile from "../components/EditProfile";
+import EditProfile from "../components/profile/EditProfile";
 import MasterLayout from "../layout/MasterLayout";
 
 const EditProfilePage = () => {

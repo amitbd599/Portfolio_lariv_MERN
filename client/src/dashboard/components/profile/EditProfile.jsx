@@ -1,5 +1,5 @@
-import FileUploadBox from "../../helper/FileUploadBox";
-import SubmitButton from "../../helper/SubmitButton";
+import FileUploadBox from "../../../helper/FileUploadBox";
+import SubmitButton from "../../../helper/SubmitButton";
 
 const EditProfile = () => {
   return (

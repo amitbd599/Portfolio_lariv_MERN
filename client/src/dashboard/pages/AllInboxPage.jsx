@@ -1,4 +1,4 @@
-import AllInbox from "../components/AllInbox";
+import AllInbox from "../components/inbox/AllInbox";
 import MasterLayout from "../layout/MasterLayout";
 
 const AllInboxPage = () => {

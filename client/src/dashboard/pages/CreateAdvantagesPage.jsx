@@ -1,4 +1,4 @@
-import CreateAdvantages from "../components/CreateAdvantages";
+import CreateAdvantages from "../components/advantages/CreateAdvantages";
 import MasterLayout from "../layout/MasterLayout";
 
 const CreateAdvantagesPage = () => {

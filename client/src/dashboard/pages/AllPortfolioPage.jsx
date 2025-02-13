@@ -1,4 +1,4 @@
-import AllPortfolio from "../components/AllPortfolio";
+import AllPortfolio from "../components/portfolio/AllPortfolio";
 import MasterLayout from "../layout/MasterLayout";
 
 const AllPortfolioPage = () => {

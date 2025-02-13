@@ -1,12 +1,12 @@
-import FileUploadBox from "../../helper/FileUploadBox";
-import SubmitButton from "../../helper/SubmitButton";
+import FileUploadBox from "../../../helper/FileUploadBox";
+import SubmitButton from "../../../helper/SubmitButton";
 
-const CreateService = () => {
+const CreateTestimonial = () => {
   return (
     <div>
       <div>
         <h2 className='text-4xl font-extrabold leading-none tracking-tight text-gray-900'>
-          Create Service
+          Create Testimonial
         </h2>
       </div>
       <div className=' rounded-lg border border-gray-200 shadow-md mt-[20px]'>
@@ -14,7 +14,7 @@ const CreateService = () => {
           <div className='grid gap-6 mb-6 w-[70%]'>
             <div>
               <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                Title
+                Client Name
               </label>
               <input
                 type='text'
@@ -23,7 +23,16 @@ const CreateService = () => {
             </div>
             <div>
               <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                Description
+                Address
+              </label>
+              <input
+                type='text'
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3'
+              />
+            </div>
+            <div>
+              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+                Review Text
               </label>
               <textarea
                 rows={6}
@@ -34,7 +43,7 @@ const CreateService = () => {
 
             <div>
               {/* SubmitButton */}
-              <SubmitButton text='Create service' submit={false} />
+              <SubmitButton text='Create testimonial' submit={false} />
             </div>
           </div>
           <div className='w-[30%]'>
@@ -70,4 +79,4 @@ const CreateService = () => {
   );
 };
 
-export default CreateService;
+export default CreateTestimonial;

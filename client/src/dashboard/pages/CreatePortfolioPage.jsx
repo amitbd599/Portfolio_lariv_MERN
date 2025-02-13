@@ -1,4 +1,4 @@
-import CreatePortfolio from "../components/CreatePortfolio";
+import CreatePortfolio from "../components/portfolio/CreatePortfolio";
 import MasterLayout from "../layout/MasterLayout";
 
 const CreatePortfolioPage = () => {
