@@ -2,7 +2,8 @@ const bcrypt = require("bcryptjs");
 const userModel = require("../models/userModel");
 const { EncodeToken } = require("../utility/TokenHelper");
 const { COOKIE_EXPIRE_TIME } = require("../config/config");
-
+const { default: mongoose } = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 //! Create user
 exports.registration = async (req, res) => {
   try {
@@ -61,7 +62,7 @@ exports.login = async (req, res) => {
 
       let options = {
         maxAge: COOKIE_EXPIRE_TIME,
-        httpOnly: true,
+        httpOnly: false,
         sameSite: "none",
         secure: true,
       };
@@ -88,7 +89,7 @@ exports.userUpdate = async (req, res) => {
   try {
     const prevEmail = req.headers.email;
     const user_id = req.headers.user_id;
-    const { email, firstName, lastName, password } = req.body;
+    const { email, firstName, lastName, password, img } = req.body;
 
     // Find user by previous email
     const user = await userModel.findOne({ email: prevEmail });
@@ -99,7 +100,7 @@ exports.userUpdate = async (req, res) => {
     }
 
     // Prepare update fields
-    let updateFields = { email, firstName, lastName, password };
+    let updateFields = { email, firstName, lastName, password, img };
 
     // If password is provided, validate it manually and hash it
     if (password) {
@@ -121,10 +122,23 @@ exports.userUpdate = async (req, res) => {
       { new: true, runValidators: true } // Ensures validation is triggered
     );
 
+    // set new token & cookies
+
+    let token = EncodeToken(email, user_id);
+
+    let options = {
+      maxAge: COOKIE_EXPIRE_TIME,
+      httpOnly: false,
+      sameSite: "none",
+      secure: true,
+    };
+
+    // Set cookie
+    res.cookie("token", token, options);
     return res.status(200).json({
       success: true,
-      message: "Profile update successful.",
-      result,
+      message: "Profile update successful",
+      token: token,
     });
   } catch (error) {
     // Handle duplicate email error
@@ -151,11 +165,13 @@ exports.userUpdate = async (req, res) => {
 
 //! user Read
 exports.userRead = async (req, res) => {
+  console.log(req.headers.email);
+
   try {
-    let email = req.headers.email;
+    const user_id = req.headers.user_id;
     let MatchStage = {
       $match: {
-        email,
+        _id: new ObjectId(user_id),
       },
     };
 
@@ -167,7 +183,7 @@ exports.userRead = async (req, res) => {
       },
     };
     let data = await userModel.aggregate([MatchStage, project]);
-    return res.status(200).json({ success: true, data: data[0] });
+    return res.status(200).json({ success: true, data: data });
   } catch (e) {
     return res.status(500).json({
       success: false,

@@ -8,7 +8,9 @@ const serviceController = require("../controllers/serviceController");
 const testimonialController = require("../controllers/testimonialController");
 const blogController = require("../controllers/blogController");
 const commentController = require("../controllers/commentController");
+const fileController = require("../controllers/fileController");
 const authVerification = require("../middlewares/authVerification");
+const { upload } = require("../middlewares/uploadMiddleware");
 const router = express.Router();
 
 // user controller
@@ -213,6 +215,26 @@ router.get(
   "/get-comment-by-blog/:blogId",
   authVerification,
   commentController.getCommentsByBlog
+);
+
+// File Upload
+router.post(
+  "/upload-file",
+  authVerification,
+  upload.single("file"),
+  fileController.createFile
+);
+
+router.get(
+  "/get-all-file/:limit/:pageNo",
+  authVerification,
+  fileController.getAllFile
+);
+
+router.delete(
+  "/delete-single-file/:id",
+  authVerification,
+  fileController.deleteSingleFile
 );
 
 module.exports = router;

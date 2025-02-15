@@ -29,6 +29,7 @@ import CreateBlogPage from "./dashboard/pages/CreateBlogPage";
 import AllBlogPage from "./dashboard/pages/AllBlogPage";
 import AllInboxPage from "./dashboard/pages/AllInboxPage";
 import EditProfilePage from "./dashboard/pages/EditProfilePage";
+import Login from "./pages/Login";
 function App() {
   useEffect(() => {
     AOS.init({
@@ -50,6 +51,7 @@ function App() {
         <Route exact path='/blog' element={<Blog />} />
         <Route exact path='/blog-details' element={<BlogDetails />} />
         <Route exact path='/contact' element={<Contact />} />
+        <Route exact path='/login' element={<Login />} />
         <Route exact path='*' element={<Error />} />
 
         {/* Dashboard */}

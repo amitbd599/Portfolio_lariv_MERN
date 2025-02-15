@@ -1,4 +1,4 @@
-import SubmitButton from "../../../helper/SubmitButton";
+import SubmitButton from "../../../common/SubmitButton";
 
 const CreateEducation = () => {
   return (

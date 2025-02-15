@@ -38,6 +38,7 @@ app.use(limiter);
 
 app.set("etag", WEB_CACHE);
 app.use("/api/v1", router);
+app.use("/api/v1/get-single-file", express.static("uploads"));
 
 app.use(express.static("client/dist"));
 

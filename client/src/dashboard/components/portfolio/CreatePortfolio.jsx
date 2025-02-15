@@ -1,5 +1,5 @@
-import FileUploadBox from "../../../helper/FileUploadBox";
-import SubmitButton from "../../../helper/SubmitButton";
+import FileUploadBox from "../../../common/FileUploadBox";
+import SubmitButton from "../../../common/SubmitButton";
 
 const CreatePortfolio = () => {
   return (

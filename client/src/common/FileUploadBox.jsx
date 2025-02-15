@@ -1,19 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaRegTrashCan } from "react-icons/fa6";
+import fileStore from "../store/fileStore";
 
-const FileUploadBox = () => {
-  const [image, setImage] = useState(null);
+const FileUploadBox = ({ src }) => {
+  const [image, setImage] = useState("");
+  let { rowFileSet } = fileStore();
+
+  useEffect(() => {
+    if (!!src === true) {
+      setImage(`/api/v1/get-single-file/${src}`);
+    }
+  }, [src]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setImage(imageUrl);
+      rowFileSet(file);
     }
   };
 
   const handleRemove = () => {
-    setImage(null);
+    setImage("");
   };
 
   return (
@@ -41,7 +50,9 @@ const FileUploadBox = () => {
             </span>
           </div>
         )}
+
         <input
+          name='file'
           type='file'
           className='absolute inset-0 opacity-0 cursor-pointer'
           onChange={handleFileChange}

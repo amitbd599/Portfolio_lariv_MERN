@@ -4,16 +4,9 @@ const fileStorageEngine = multer.diskStorage({
     cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
-    cb(null, "api-img__" + Date.now() + "__" + file.originalname);
+    const sanitizedName = file.originalname.replace(/\s+/g, "");
+    cb(null, "api-file_" + Date.now() + "__" + sanitizedName);
   },
 });
 
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "application/json") {
-    cb(null, true);
-  } else {
-    cb(new Error("Only JSON files are allowed"), false);
-  }
-};
-
-module.exports.upload = multer({ storage: fileStorageEngine, fileFilter });
+module.exports.upload = multer({ storage: fileStorageEngine });

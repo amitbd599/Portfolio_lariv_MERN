@@ -17,9 +17,19 @@ import {
   Avatar,
   Typography,
 } from "@material-tailwind/react";
+import userStore from "../../store/userStore";
+import { useEffect } from "react";
 
 // eslint-disable-next-line react/prop-types
 const MasterLayout = ({ children }) => {
+  let { userData, userReadRequest } = userStore();
+
+  useEffect(() => {
+    (async () => {
+      await userReadRequest();
+    })();
+  }, [userReadRequest]);
+
   let routerData = [
     {
       name: "Experience",
@@ -128,6 +138,8 @@ const MasterLayout = ({ children }) => {
     },
   ];
 
+  console.log(userData);
+
   return (
     <>
       <div>
@@ -156,10 +168,10 @@ const MasterLayout = ({ children }) => {
                 <Menu>
                   <MenuHandler>
                     <Avatar
-                      variant='circular'
+                      variant='rounded'
                       alt='tania andrew'
-                      className='cursor-pointer'
-                      src='https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80'
+                      className='cursor-pointer rounded-full w-[50px] h-[50px] object-cover'
+                      src={`/api/v1/get-single-file/${userData?.img}`}
                     />
                   </MenuHandler>
                   <MenuList>
@@ -167,9 +179,12 @@ const MasterLayout = ({ children }) => {
                       <span>
                         <FaPenToSquare />
                       </span>
-                      <Typography variant='small' className='font-medium'>
+                      <Link
+                        to='/edit-profile'
+                        className='text-base text-gray-900 font-normal rounded-lg flex items-center  hover:bg-gray-100 '
+                      >
                         Edit Profile
-                      </Typography>
+                      </Link>
                     </MenuItem>
                     <MenuItem className='flex items-center gap-2'>
                       <span>
@@ -208,14 +223,14 @@ const MasterLayout = ({ children }) => {
                 <div className='flex flex-col items-center mt-6 -mx-2'>
                   <img
                     className='object-cover w-24 h-24 mx-2 rounded-full'
-                    src='https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
+                    src={`/api/v1/get-single-file/${userData?.img}`}
                     alt='avatar'
                   />
                   <h4 className='mx-2 mt-2 font-medium text-gray-800 dark:text-gray-200'>
-                    John Doe
+                    {userData?.firstName} {userData?.lastName}
                   </h4>
                   <p className='mx-2 mt-1 text-sm font-medium text-gray-600 dark:text-gray-400'>
-                    john@example.com
+                    {userData?.email}
                   </p>
                 </div>
                 <div className='flex-1 px-3 bg-white pt-3 space-y-1'>
