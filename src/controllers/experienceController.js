@@ -38,7 +38,7 @@ exports.getAllExperience = async (req, res) => {
   try {
     let project = {
       $project: {
-        _id: 0,
+        _id: 1,
         title: 1,
         subTitle: 1,
         description: 1,

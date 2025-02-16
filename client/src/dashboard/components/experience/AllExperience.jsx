@@ -1,6 +1,29 @@
 import { FaPenToSquare, FaRegTrashCan } from "react-icons/fa6";
+import experienceStore from "../../../store/experienceStore";
+import { useEffect } from "react";
+import { DeleteAlert } from "../../../helper/helper";
 
 const AllExperience = () => {
+  let { allExperience, getAllExperienceRequest, deleteExperienceRequest } =
+    experienceStore();
+
+  useEffect(() => {
+    (async () => {
+      await getAllExperienceRequest();
+    })();
+  }, [getAllExperienceRequest]);
+
+  //! delete file
+  let deleteExperience = async (id) => {
+    console.log(id);
+
+    DeleteAlert(deleteExperienceRequest, id).then(async (res) => {
+      if (res) {
+        await getAllExperienceRequest();
+      }
+    });
+  };
+
   return (
     <div>
       <div>
@@ -32,22 +55,27 @@ const AllExperience = () => {
             </tr>
           </thead>
           <tbody className='divide-y divide-gray-100 border-t border-gray-100'>
-            <tr className='hover:bg-gray-50'>
-              <td className='px-6 py-4'>UI/UX 10</td>
-              <td className='px-6 py-4'>subTitle</td>
-              <td className='px-6 py-4'>date</td>
+            {allExperience.map((item, index) => (
+              <tr key={index} className='hover:bg-gray-50'>
+                <td className='px-6 py-4'>{item?.title}</td>
+                <td className='px-6 py-4'>{item?.subTitle}</td>
+                <td className='px-6 py-4'>{item?.time}</td>
 
-              <td className='px-6 py-4'>
-                <div className='flex justify-end gap-2'>
-                  <button className='p-1'>
-                    <FaRegTrashCan className='text-[18px]' />
-                  </button>
-                  <button className='p-1'>
-                    <FaPenToSquare className='text-[18px]' />
-                  </button>
-                </div>
-              </td>
-            </tr>
+                <td className='px-6 py-4'>
+                  <div className='flex justify-end gap-2'>
+                    <button
+                      className='p-1'
+                      onClick={() => deleteExperience(item?._id)}
+                    >
+                      <FaRegTrashCan className='text-[18px]' />
+                    </button>
+                    <button className='p-1'>
+                      <FaPenToSquare className='text-[18px]' />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
