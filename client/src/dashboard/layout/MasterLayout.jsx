@@ -251,7 +251,7 @@ const MasterLayout = ({ children }) => {
                     </li>
                     <li>
                       <NavLink
-                        to='/media-center'
+                        to='/media-center/1'
                         className={({ isActive }) =>
                           `text-base text-gray-900 font-normal rounded-lg flex items-center p-2 hover:bg-gray-100 group ${
                             isActive && "bg-gray-300 hover:bg-gray-300"

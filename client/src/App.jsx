@@ -56,7 +56,7 @@ function App() {
 
         {/* Dashboard */}
         <Route exact path='/dashboard' element={<DashboardHomePage />} />
-        <Route exact path='/media-center' element={<MediaPage />} />
+        <Route exact path='/media-center/:pageNo' element={<MediaPage />} />
         <Route exact path='/create-expenses' element={<CreateExpensesPage />} />
         <Route exact path='/all-expenses' element={<AllExpensesPage />} />
         <Route

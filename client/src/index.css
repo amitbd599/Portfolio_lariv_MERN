@@ -65,6 +65,9 @@ Version      : 1.0.1
   .navActive {
     @apply font-medium text-theme;
   }
+  .active .pagination {
+    @apply border-transparent bg-theme text-white;
+  }
   .progress .break-all {
     background: #ff014f !important;
   }

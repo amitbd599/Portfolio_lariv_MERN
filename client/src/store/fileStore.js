@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import axios from "axios";
-import { ErrorToast } from "../helper/helper";
+import { ErrorToast, SuccessToast } from "../helper/helper";
 const fileStore = create((set) => ({
   //! file Upload Request api
   filePath: "",
@@ -46,6 +46,24 @@ const fileStore = create((set) => ({
     } catch (error) {
       ErrorToast(error?.response?.data?.message);
       return null;
+    }
+  },
+
+  //! delete product api
+  deleteProductRequest: async (id, fileName) => {
+    set({ isFormSubmit: true });
+    try {
+      let res = await axios.delete(
+        `/api/v1/delete-single-file/${id}?fileName=${fileName}`
+      );
+      set({ isFormSubmit: false });
+      SuccessToast(res.data.message);
+      return true;
+    } catch (error) {
+      ErrorToast(error?.response?.data?.message);
+      return false;
+    } finally {
+      set({ isFormSubmit: false });
     }
   },
 }));

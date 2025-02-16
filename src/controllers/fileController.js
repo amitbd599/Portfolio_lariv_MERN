@@ -88,7 +88,9 @@ exports.getAllFile = async (req, res) => {
 exports.deleteSingleFile = async (req, res) => {
   try {
     let id = new ObjectId(req.params.id);
-    let { fileName } = req.body;
+    let fileName = req.query.fileName;
+
+    console.log(fileName);
 
     if (!fileName) {
       return res
