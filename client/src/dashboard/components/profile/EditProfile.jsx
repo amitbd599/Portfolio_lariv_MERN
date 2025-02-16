@@ -6,7 +6,6 @@ import userStore from "../../../store/userStore";
 import fileStore from "../../../store/fileStore";
 
 const EditProfile = () => {
-  // let [userData, setUser] = useState([]);
   let { userUpdateRequest, userData, userReadRequest, isFormSubmit } =
     userStore();
   let { fileUploadRequest, rowFile } = fileStore();

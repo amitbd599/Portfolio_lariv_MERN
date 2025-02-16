@@ -1,7 +1,7 @@
 import CreateExperience from "../components/experience/CreateExperience";
 import MasterLayout from "../layout/MasterLayout";
 
-const CreateExpensesPage = () => {
+const CreateExperiencePage = () => {
   return (
     <MasterLayout>
       {/* CreateExperience */}
@@ -10,4 +10,4 @@ const CreateExpensesPage = () => {
   );
 };
 
-export default CreateExpensesPage;
+export default CreateExperiencePage;

@@ -13,7 +13,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import DashboardHomePage from "./dashboard/pages/DashboardHomePage";
 import MediaPage from "./dashboard/pages/MediaPage";
-import CreateExpensesPage from "./dashboard/pages/CreateExpensesPage";
+import CreateExperiencePage from "./dashboard/pages/CreateExperiencePage";
 import AllExpensesPage from "./dashboard/pages/AllExpensesPage";
 import CreateEducationPage from "./dashboard/pages/CreateEducationPage";
 import AllEducationPage from "./dashboard/pages/AllEducationPage";
@@ -57,7 +57,11 @@ function App() {
         {/* Dashboard */}
         <Route exact path='/dashboard' element={<DashboardHomePage />} />
         <Route exact path='/media-center/:pageNo' element={<MediaPage />} />
-        <Route exact path='/create-expenses' element={<CreateExpensesPage />} />
+        <Route
+          exact
+          path='/create-expenses'
+          element={<CreateExperiencePage />}
+        />
         <Route exact path='/all-expenses' element={<AllExpensesPage />} />
         <Route
           exact
