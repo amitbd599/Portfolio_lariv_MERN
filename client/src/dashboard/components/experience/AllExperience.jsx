@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { FaPenToSquare, FaRegTrashCan } from "react-icons/fa6";
 import experienceStore from "../../../store/experienceStore";
 import { useEffect, useRef } from "react";
@@ -95,9 +96,12 @@ const AllExperience = () => {
                         >
                           <FaRegTrashCan className='text-[18px]' />
                         </button>
-                        <button className='p-1'>
+                        <Link
+                          to={`/edit-expenses/${item?._id}`}
+                          className='p-1'
+                        >
                           <FaPenToSquare className='text-[18px]' />
-                        </button>
+                        </Link>
                       </div>
                     </td>
                   </tr>

@@ -30,6 +30,7 @@ import AllBlogPage from "./dashboard/pages/AllBlogPage";
 import AllInboxPage from "./dashboard/pages/AllInboxPage";
 import EditProfilePage from "./dashboard/pages/EditProfilePage";
 import Login from "./pages/Login";
+import EditExperiencePage from "./dashboard/pages/EditExperiencePage";
 function App() {
   useEffect(() => {
     AOS.init({
@@ -63,6 +64,11 @@ function App() {
           element={<CreateExperiencePage />}
         />
         <Route exact path='/all-expenses' element={<AllExpensesPage />} />
+        <Route
+          exact
+          path='/edit-expenses/:id'
+          element={<EditExperiencePage />}
+        />
         <Route
           exact
           path='/create-education'
