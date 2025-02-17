@@ -35,10 +35,11 @@ const fileStore = create((set) => ({
   },
 
   //! get-all-file api
-  allFile: [],
+  allFile: null,
   total: 0,
   getAllFileRequest: async (item, pageNo) => {
     try {
+      set({ allFile: null });
       let res = await axios.get(`/api/v1/get-all-file/${item}/${pageNo}`);
 
       set({ allFile: res.data.data.file });

@@ -20,9 +20,10 @@ const experienceStore = create((set) => ({
   },
 
   //! create-experience
-  allExperience: [],
+  allExperience: null,
   getAllExperienceRequest: async () => {
     try {
+      set({ allExperience: null });
       let res = await axios.get(`/api/v1/get-all-experience`);
       set({ allExperience: res?.data?.data });
     } catch (error) {
@@ -31,25 +32,21 @@ const experienceStore = create((set) => ({
     }
   },
 
-    //! delete experience api
-    deleteExperienceRequest: async (id) => {
-      set({ isFormSubmit: true });
-      try {
-        let res = await axios.delete(
-          `/api/v1/delete-single-experience/${id}`
-        );
-        set({ isFormSubmit: false });
-        SuccessToast(res.data.message);
-        return true;
-      } catch (error) {
-        ErrorToast(error?.response?.data?.message);
-        return false;
-      } finally {
-        set({ isFormSubmit: false });
-      }
-    },
-
-
+  //! delete experience api
+  deleteExperienceRequest: async (id) => {
+    set({ isFormSubmit: true });
+    try {
+      let res = await axios.delete(`/api/v1/delete-single-experience/${id}`);
+      set({ isFormSubmit: false });
+      SuccessToast(res.data.message);
+      return true;
+    } catch (error) {
+      ErrorToast(error?.response?.data?.message);
+      return false;
+    } finally {
+      set({ isFormSubmit: false });
+    }
+  },
 }));
 
 export default experienceStore;

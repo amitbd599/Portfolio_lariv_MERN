@@ -1,15 +1,19 @@
 import { FaPenToSquare, FaRegTrashCan } from "react-icons/fa6";
 import experienceStore from "../../../store/experienceStore";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { DeleteAlert } from "../../../helper/helper";
-
+import LoadingBar from "react-top-loading-bar";
+import Skeleton from "react-loading-skeleton";
 const AllExperience = () => {
+  const loadingBarRef = useRef(null);
   let { allExperience, getAllExperienceRequest, deleteExperienceRequest } =
     experienceStore();
 
   useEffect(() => {
+    loadingBarRef.current.continuousStart();
     (async () => {
       await getAllExperienceRequest();
+      loadingBarRef.current.complete();
     })();
   }, [getAllExperienceRequest]);
 
@@ -26,6 +30,7 @@ const AllExperience = () => {
 
   return (
     <div>
+      <LoadingBar color='#FF014F' ref={loadingBarRef} height={2} />
       <div>
         <h2 className='text-4xl font-extrabold leading-none tracking-tight text-gray-900'>
           All Experience
@@ -55,27 +60,50 @@ const AllExperience = () => {
             </tr>
           </thead>
           <tbody className='divide-y divide-gray-100 border-t border-gray-100'>
-            {allExperience.map((item, index) => (
-              <tr key={index} className='hover:bg-gray-50'>
-                <td className='px-6 py-4'>{item?.title}</td>
-                <td className='px-6 py-4'>{item?.subTitle}</td>
-                <td className='px-6 py-4'>{item?.time}</td>
+            {allExperience === null ? (
+              <>
+                {[...Array(6)].map((item, index) => (
+                  <tr key={index} className='hover:bg-gray-50'>
+                    <td className='px-6 py-4'>
+                      <Skeleton count={1} />
+                    </td>
+                    <td className='px-6 py-4'>
+                      <Skeleton count={1} />
+                    </td>
+                    <td className='px-6 py-4'>
+                      <Skeleton count={1} />
+                    </td>
+                    <td className='px-6 py-4'>
+                      <Skeleton count={1} />
+                    </td>
+                  </tr>
+                ))}
+              </>
+            ) : (
+              <>
+                {allExperience.map((item, index) => (
+                  <tr key={index} className='hover:bg-gray-50'>
+                    <td className='px-6 py-4'>{item?.title}</td>
+                    <td className='px-6 py-4'>{item?.subTitle}</td>
+                    <td className='px-6 py-4'>{item?.time}</td>
 
-                <td className='px-6 py-4'>
-                  <div className='flex justify-end gap-2'>
-                    <button
-                      className='p-1'
-                      onClick={() => deleteExperience(item?._id)}
-                    >
-                      <FaRegTrashCan className='text-[18px]' />
-                    </button>
-                    <button className='p-1'>
-                      <FaPenToSquare className='text-[18px]' />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                    <td className='px-6 py-4'>
+                      <div className='flex justify-end gap-2'>
+                        <button
+                          className='p-1'
+                          onClick={() => deleteExperience(item?._id)}
+                        >
+                          <FaRegTrashCan className='text-[18px]' />
+                        </button>
+                        <button className='p-1'>
+                          <FaPenToSquare className='text-[18px]' />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </>
+            )}
           </tbody>
         </table>
       </div>
