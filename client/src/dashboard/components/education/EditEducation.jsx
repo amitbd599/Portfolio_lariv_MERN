@@ -2,23 +2,38 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import SubmitButton from "../../../common/SubmitButton";
 import educationStore from "../../../store/educationStore";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 
-const CreateEducation = () => {
-  let { createEducationRequest, isFormSubmit } = educationStore();
+const EditEducation = () => {
+  let {
+    singleEducationRequest,
+    singleEducation,
+    updateEducationRequest,
+    isFormSubmit,
+  } = educationStore();
+  let params = useParams();
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    (async () => {
+      await singleEducationRequest(params.id);
+    })();
+  }, [params.id, singleEducationRequest]);
   return (
     <div>
       <div>
         <h2 className='text-4xl font-extrabold leading-none tracking-tight text-gray-900'>
-          Create Education
+          Edit Education
         </h2>
       </div>
 
       <Formik
         initialValues={{
-          title: "",
-          description: "",
-          institution: "",
-          time: "",
+          title: singleEducation?.title,
+          institution: singleEducation?.institution,
+          description: singleEducation?.description,
+          time: singleEducation?.time,
         }}
         enableReinitialize={true}
         validationSchema={Yup.object({
@@ -27,10 +42,10 @@ const CreateEducation = () => {
           description: Yup.string().min(6, "Too short").required("Required"),
           time: Yup.string().min(6, "Too short").required("Required"),
         })}
-        onSubmit={async (values, { setSubmitting, resetForm }) => {
-          await createEducationRequest(values);
+        onSubmit={async (values, { setSubmitting }) => {
+          await updateEducationRequest(params.id, values);
           setSubmitting(false);
-          resetForm();
+          navigate("/all-education");
         }}
       >
         {({ isSubmitting }) => (
@@ -58,11 +73,11 @@ const CreateEducation = () => {
                   </label>
                   <Field
                     type='text'
-                    name='description'
+                    name='institution'
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3'
                   />
                   <ErrorMessage
-                    name='description'
+                    name='institution'
                     component='div'
                     className='error text-red-400'
                   />
@@ -73,11 +88,11 @@ const CreateEducation = () => {
                   </label>
                   <Field
                     type='text'
-                    name='institution'
+                    name='description'
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3'
                   />
                   <ErrorMessage
-                    name='institution'
+                    name='description'
                     component='div'
                     className='error text-red-400'
                   />
@@ -114,4 +129,4 @@ const CreateEducation = () => {
   );
 };
 
-export default CreateEducation;
+export default EditEducation;

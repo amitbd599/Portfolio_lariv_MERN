@@ -31,6 +31,7 @@ import AllInboxPage from "./dashboard/pages/AllInboxPage";
 import EditProfilePage from "./dashboard/pages/EditProfilePage";
 import Login from "./pages/Login";
 import EditExperiencePage from "./dashboard/pages/EditExperiencePage";
+import EditEducationPage from "./dashboard/pages/EditEducationPage";
 function App() {
   useEffect(() => {
     AOS.init({
@@ -73,6 +74,11 @@ function App() {
           exact
           path='/create-education'
           element={<CreateEducationPage />}
+        />
+        <Route
+          exact
+          path='/edit-education/:id'
+          element={<EditEducationPage />}
         />
         <Route exact path='/all-education' element={<AllEducationPage />} />
         <Route

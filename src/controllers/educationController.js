@@ -39,7 +39,7 @@ exports.getAllEducation = async (req, res) => {
   try {
     let project = {
       $project: {
-        _id: 0,
+        _id: 1,
         title: 1,
         institution: 1,
         description: 1,
