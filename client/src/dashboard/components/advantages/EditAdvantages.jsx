@@ -1,51 +1,51 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import experienceStore from "../../../store/experienceStore";
 import SubmitButton from "../../../common/SubmitButton";
-import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import advantagesStore from "../../../store/advantagesStore";
 
-const EditExperience = () => {
+const EditAdvantages = () => {
   let {
-    singleExperienceRequest,
-    singleExperience,
-    updateExperienceRequest,
+    singleAdvantagesRequest,
+    singleAdvantages,
+    updateAdvantagesRequest,
     isFormSubmit,
-  } = experienceStore();
+  } = advantagesStore();
   let params = useParams();
   let navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
-      await singleExperienceRequest(params.id);
+      await singleAdvantagesRequest(params.id);
     })();
-  }, [params.id, singleExperienceRequest]);
-
+  }, [params.id, singleAdvantagesRequest]);
   return (
     <div>
       <div>
         <h2 className='text-4xl font-extrabold leading-none tracking-tight text-gray-900'>
-          Edit Experience
+          Edit Education
         </h2>
       </div>
+
       <Formik
         initialValues={{
-          title: singleExperience?.title,
-          subTitle: singleExperience?.subTitle,
-          description: singleExperience?.description,
-          time: singleExperience?.time,
+          subject: singleAdvantages?.subject,
+          position: singleAdvantages?.position,
+          percent: singleAdvantages?.percent,
+          time: singleAdvantages?.time,
         }}
         enableReinitialize={true}
         validationSchema={Yup.object({
-          title: Yup.string().min(6, "Too short").required("Required"),
-          subTitle: Yup.string().min(6, "Too short").required("Required"),
-          description: Yup.string().min(6, "Too short").required("Required"),
+          subject: Yup.string().min(6, "Too short").required("Required"),
+          position: Yup.string().min(6, "Too short").required("Required"),
+          percent: Yup.string().min(6, "Too short").required("Required"),
           time: Yup.string().min(6, "Too short").required("Required"),
         })}
         onSubmit={async (values, { setSubmitting }) => {
-          await updateExperienceRequest(params.id, values);
+          await updateAdvantagesRequest(params.id, values);
           setSubmitting(false);
-          navigate("/all-experience");
+          navigate("/all-advantages");
         }}
       >
         {({ isSubmitting }) => (
@@ -58,41 +58,41 @@ const EditExperience = () => {
                   </label>
                   <Field
                     type='text'
-                    name='title'
+                    name='subject'
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3'
                   />
                   <ErrorMessage
-                    name='title'
+                    name='subject'
                     component='div'
                     className='error text-red-400'
                   />
                 </div>
                 <div>
                   <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                    Sub Title
+                    Position
                   </label>
                   <Field
                     type='text'
-                    name='subTitle'
+                    name='position'
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3'
                   />
                   <ErrorMessage
-                    name='subTitle'
+                    name='position'
                     component='div'
                     className='error text-red-400'
                   />
                 </div>
                 <div>
                   <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                    Description
+                    Percent
                   </label>
                   <Field
                     type='text'
-                    name='description'
+                    name='percent'
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3'
                   />
                   <ErrorMessage
-                    name='description'
+                    name='percent'
                     component='div'
                     className='error text-red-400'
                   />
@@ -129,4 +129,4 @@ const EditExperience = () => {
   );
 };
 
-export default EditExperience;
+export default EditAdvantages;

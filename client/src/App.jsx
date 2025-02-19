@@ -32,6 +32,7 @@ import EditProfilePage from "./dashboard/pages/EditProfilePage";
 import Login from "./pages/Login";
 import EditExperiencePage from "./dashboard/pages/EditExperiencePage";
 import EditEducationPage from "./dashboard/pages/EditEducationPage";
+import EditAdvantagesPage from "./dashboard/pages/EditAdvantagesPage";
 function App() {
   useEffect(() => {
     AOS.init({
@@ -58,18 +59,23 @@ function App() {
 
         {/* Dashboard */}
         <Route exact path='/dashboard' element={<DashboardHomePage />} />
+        {/* media */}
         <Route exact path='/media-center/:pageNo' element={<MediaPage />} />
+
+        {/* experience */}
         <Route
           exact
-          path='/create-expenses'
+          path='/create-experience'
           element={<CreateExperiencePage />}
         />
-        <Route exact path='/all-expenses' element={<AllExpensesPage />} />
+        <Route exact path='/all-experience' element={<AllExpensesPage />} />
         <Route
           exact
-          path='/edit-expenses/:id'
+          path='/edit-experience/:id'
           element={<EditExperiencePage />}
         />
+
+        {/* education */}
         <Route
           exact
           path='/create-education'
@@ -81,12 +87,20 @@ function App() {
           element={<EditEducationPage />}
         />
         <Route exact path='/all-education' element={<AllEducationPage />} />
+
+        {/* advantages */}
         <Route
           exact
           path='/create-advantages'
           element={<CreateAdvantagesPage />}
         />
         <Route exact path='/all-advantages' element={<AllAdvantagesPage />} />
+        <Route
+          exact
+          path='/edit-advantages/:id'
+          element={<EditAdvantagesPage />}
+        />
+
         <Route
           exact
           path='/create-portfolio'

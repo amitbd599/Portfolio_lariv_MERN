@@ -36,12 +36,12 @@ const MasterLayout = ({ children }) => {
       route: [
         {
           name: "Create",
-          path: "/create-expenses",
+          path: "/create-experience",
           icon: <FaHouseChimney />,
         },
         {
           name: "All",
-          path: "/all-expenses",
+          path: "/all-experience",
           icon: <FaList />,
         },
       ],

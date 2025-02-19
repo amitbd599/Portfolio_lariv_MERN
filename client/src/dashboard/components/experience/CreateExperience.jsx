@@ -100,7 +100,7 @@ const CreateExperience = () => {
 
               {/* SubmitButton */}
               <SubmitButton
-                text='Update profile'
+                text='Create Experience'
                 type='submit'
                 disabled={isSubmitting}
                 isFormSubmit={isFormSubmit}

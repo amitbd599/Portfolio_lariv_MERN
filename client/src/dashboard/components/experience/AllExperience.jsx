@@ -97,7 +97,7 @@ const AllExperience = () => {
                           <FaRegTrashCan className='text-[18px]' />
                         </button>
                         <Link
-                          to={`/edit-expenses/${item?._id}`}
+                          to={`/edit-experience/${item?._id}`}
                           className='p-1'
                         >
                           <FaPenToSquare className='text-[18px]' />

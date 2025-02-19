@@ -100,7 +100,7 @@ const CreateAdvantages = () => {
 
               {/* SubmitButton */}
               <SubmitButton
-                text='Create advantages'
+                text='Create Advantages'
                 type='submit'
                 disabled={isSubmitting}
                 isFormSubmit={isFormSubmit}

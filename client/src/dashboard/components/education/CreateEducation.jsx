@@ -101,7 +101,7 @@ const CreateEducation = () => {
 
               {/* SubmitButton */}
               <SubmitButton
-                text='Update profile'
+                text='Create Education'
                 type='submit'
                 disabled={isSubmitting}
                 isFormSubmit={isFormSubmit}

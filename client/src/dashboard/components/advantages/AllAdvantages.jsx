@@ -99,7 +99,7 @@ const AllAdvantages = () => {
                           <FaRegTrashCan className='text-[18px]' />
                         </button>
                         <Link
-                          to={`/edit-education/${item?._id}`}
+                          to={`/edit-advantages/${item?._id}`}
                           className='p-1'
                         >
                           <FaPenToSquare className='text-[18px]' />
