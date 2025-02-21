@@ -8,7 +8,7 @@ import {
   FaRegCircleDot,
   FaRegEnvelope,
 } from "react-icons/fa6";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import {
   Menu,
   MenuHandler,
@@ -18,7 +18,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import userStore from "../../store/userStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // eslint-disable-next-line react/prop-types
 const MasterLayout = ({ children }) => {
@@ -31,6 +31,21 @@ const MasterLayout = ({ children }) => {
   }, [userReadRequest]);
 
   let routerData = [
+    {
+      name: "Home",
+      route: [
+        {
+          name: "Dashboard",
+          path: "/dashboard",
+          icon: <FaHouseChimney />,
+        },
+        {
+          name: "Media",
+          path: "/media-center/1",
+          icon: <FaFile />,
+        },
+      ],
+    },
     {
       name: "Experience",
       route: [
@@ -138,7 +153,20 @@ const MasterLayout = ({ children }) => {
     },
   ];
 
-  console.log(userData);
+  const location = useLocation(); // Get current route
+  const [openMenu, setOpenMenu] = useState(null);
+
+  // Auto open the menu if the active route is inside it
+  useEffect(() => {
+    const activeMenu = routerData.find((menu) =>
+      menu.route.some((route) => route.path === location.pathname)
+    );
+    setOpenMenu(activeMenu ? activeMenu.name : null);
+  }, [location.pathname]);
+
+  const handleToggle = (menuName) => {
+    setOpenMenu(openMenu === menuName ? null : menuName);
+  };
 
   return (
     <>
@@ -212,7 +240,7 @@ const MasterLayout = ({ children }) => {
           </div>
         </nav>
 
-        <div className='flex overflow-hidden bg-white pt-16 '>
+        <div className='flex overflow-hidden bg-white pt-16  '>
           <aside
             id='sidebar'
             className='fixed  z-20 h-full top-0 left-0 pt-16 hidden lg:flex flex-shrink-0 flex-col w-64 transition-width duration-75'
@@ -234,63 +262,41 @@ const MasterLayout = ({ children }) => {
                   </p>
                 </div>
                 <div className='flex-1 px-3 bg-white pt-3 space-y-1'>
-                  <hr />
-                  <ul className='space-y-2 pb-2'>
-                    <li>
-                      <NavLink
-                        to='/dashboard'
-                        className={({ isActive }) =>
-                          `text-base text-gray-900 font-normal rounded-lg flex items-center p-2 hover:bg-gray-100 group ${
-                            isActive && "bg-gray-300 hover:bg-gray-300"
-                          }`
-                        }
-                      >
-                        <FaHouseChimney />
-                        <span className='ml-3'>Dashboard</span>
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        to='/media-center/1'
-                        className={({ isActive }) =>
-                          `text-base text-gray-900 font-normal rounded-lg flex items-center p-2 hover:bg-gray-100 group ${
-                            isActive && "bg-gray-300 hover:bg-gray-300"
-                          }`
-                        }
-                      >
-                        <FaFile />
-                        <span className='ml-3'>Media File</span>
-                      </NavLink>
-                    </li>
-                  </ul>
-
                   {routerData.map((item, index) => (
-                    <>
-                      <hr />
-                      <ul className='space-y-2 pb-2' key={index}>
-                        <li>
-                          <div className='text-base text-gray-900 font-normal rounded-lg flex items-center p-2  group'>
-                            <FaRegCircleDot />
-                            <span className='ml-3'>{item.name}</span>
-                          </div>
-                        </li>
-                        {item.route.map((route, index) => (
-                          <li className='ps-5' key={index}>
+                    <div
+                      key={index}
+                      className='text-base  border-t text-gray-900 font-normal   items-center p-2  group'
+                    >
+                      {/* Parent Menu */}
+                      <button
+                        onClick={() => handleToggle(item.name)}
+                        className={`w-full text-left p-2 rounded-md transition ${
+                          openMenu === item.name ? " font-bold" : ""
+                        }  hover:bg-gray-300`}
+                      >
+                        {item.name}
+                      </button>
+
+                      {/* Submenu - Show only if active */}
+                      {openMenu === item.name && (
+                        <div className='pl-2  rounded-md '>
+                          {item.route.map((subItem, subIndex) => (
                             <NavLink
-                              to={route.path}
+                              key={subIndex}
+                              to={subItem.path}
                               className={({ isActive }) =>
-                                `text-base text-gray-900 font-normal rounded-lg flex items-center p-2 hover:bg-gray-100 group ${
+                                `text-base text-gray-900 font-normal  rounded-lg flex gap-3 items-center mt-2 p-2 hover:bg-gray-100 group ${
                                   isActive && "bg-gray-300 hover:bg-gray-300"
                                 }`
                               }
                             >
-                              <span>{route.icon}</span>
-                              <span className='ml-3'>{route.name} </span>
+                              <span>{subItem.icon}</span>
+                              <span>{subItem.name}</span>
                             </NavLink>
-                          </li>
-                        ))}
-                      </ul>
-                    </>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>
