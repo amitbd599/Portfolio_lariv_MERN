@@ -1,7 +1,15 @@
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import FileUploadBox from "../../../common/FileUploadBox";
 import SubmitButton from "../../../common/SubmitButton";
+import fileStore from "../../../store/fileStore";
+import testimonialStore from "../../../store/testimonialStore";
+import { useNavigate } from "react-router-dom";
 
 const CreateTestimonial = () => {
+  let { createTestimonialRequest, isFormSubmit } = testimonialStore();
+  let { fileUploadRequest, rowFile } = fileStore();
+  let navigate = useNavigate();
   return (
     <div>
       <div>
@@ -9,72 +17,111 @@ const CreateTestimonial = () => {
           Create Testimonial
         </h2>
       </div>
-      <div className=' rounded-lg border border-gray-200 shadow-md mt-[20px]'>
-        <form className='p-[20px] flex gap-6'>
-          <div className='grid gap-6 mb-6 w-[70%]'>
-            <div>
-              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                Client Name
-              </label>
-              <input
-                type='text'
-                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3'
-              />
-            </div>
-            <div>
-              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                Address
-              </label>
-              <input
-                type='text'
-                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3'
-              />
-            </div>
-            <div>
-              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                Review Text
-              </label>
-              <textarea
-                rows={6}
-                type='text'
-                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3'
-              ></textarea>
-            </div>
+      <Formik
+        initialValues={{
+          clientName: "",
+          address: "",
+          reviewText: "",
+        }}
+        enableReinitialize={true}
+        validationSchema={Yup.object({
+          clientName: Yup.string().min(6, "Too short").required("Required"),
+          address: Yup.string().min(6, "Too short").required("Required"),
+          reviewText: Yup.string().min(6, "Too short").required("Required"),
+        })}
+        onSubmit={async (values, { setSubmitting }) => {
+          if (rowFile !== null) {
+            let filePath = await fileUploadRequest(rowFile);
+            let result = await createTestimonialRequest({
+              ...values,
+              img: filePath,
+            });
 
-            <div>
-              {/* SubmitButton */}
-              <SubmitButton text='Create testimonial' submit={false} />
-            </div>
-          </div>
-          <div className='w-[30%]'>
-            <div>
-              <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                Image
-              </label>
-              {/* <div className='w-full'>
-                <div className='relative  h-[226px] rounded-lg border-dashed border-2 border-blue-700 bg-gray-100 flex justify-center items-center'>
-                  <div className='absolute'>
-                    <div className='flex flex-col items-center'>
-                      <i className='fa fa-folder-open fa-4x text-blue-700' />
-                      <span className='block text-gray-400 font-normal'>
-                        Attach you files here
-                      </span>
-                    </div>
-                  </div>
-                  <input
-                    type='file'
-                    className='h-full w-full opacity-0'
-                    name=''
+            if (result) {
+              setSubmitting(false);
+              navigate("/all-testimonial");
+            }
+          } else {
+            await createTestimonialRequest(values);
+          }
+        }}
+      >
+        {({ isSubmitting }) => (
+          <Form className=' rounded-lg border border-gray-200 shadow-md mt-[20px]'>
+            <div className='p-[20px] flex gap-6'>
+              <div className='grid gap-6 mb-6 w-[70%]'>
+                <div>
+                  <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+                    Client Name
+                  </label>
+                  <Field
+                    type='text'
+                    name='clientName'
+                    className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3'
+                  />
+                  <ErrorMessage
+                    name='clientName'
+                    component='div'
+                    className='error text-red-400'
                   />
                 </div>
-              </div> */}
+                <div>
+                  <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+                    Address
+                  </label>
+                  <Field
+                    type='text'
+                    name='address'
+                    className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3'
+                  />
+                  <ErrorMessage
+                    name='address'
+                    component='div'
+                    className='error text-red-400'
+                  />
+                </div>
+                <div>
+                  <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+                    Review Text
+                  </label>
+                  <Field
+                    rows={6}
+                    type='text'
+                    as='textarea'
+                    name='reviewText'
+                    className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3'
+                  />
+                  <ErrorMessage
+                    name='reviewText'
+                    component='div'
+                    className='error text-red-400'
+                  />
+                </div>
 
-              {/* FileUploadBox */}
-              <FileUploadBox />
+                <div>
+                  {/* SubmitButton */}
+                  <SubmitButton
+                    text='Create Testimonial'
+                    type='submit'
+                    disabled={isSubmitting}
+                    isFormSubmit={isFormSubmit}
+                  />
+                </div>
+              </div>
+              <div className='w-[30%]'>
+                <div>
+                  <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+                    Image
+                  </label>
+
+                  {/* FileUploadBox */}
+                  <FileUploadBox />
+                </div>
+              </div>
             </div>
-          </div>
-        </form>
-      </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

@@ -110,23 +110,6 @@ const CreatePortfolio = () => {
                   <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
                     Image
                   </label>
-                  {/* <div className='w-full'>
-                <div className='relative  h-[226px] rounded-lg border-dashed border-2 border-blue-700 bg-gray-100 flex justify-center items-center'>
-                  <div className='absolute'>
-                    <div className='flex flex-col items-center'>
-                      <i className='fa fa-folder-open fa-4x text-blue-700' />
-                      <span className='block text-gray-400 font-normal'>
-                        Attach you files here
-                      </span>
-                    </div>
-                  </div>
-                  <input
-                    type='file'
-                    className='h-full w-full opacity-0'
-                    name=''
-                  />
-                </div>
-              </div> */}
 
                   {/* FileUploadBox */}
                   <FileUploadBox />
