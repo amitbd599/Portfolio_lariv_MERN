@@ -4,13 +4,17 @@ import { Spinner } from "@material-tailwind/react";
 const SubmitButton = ({ text, isFormSubmit }) => {
   if (isFormSubmit) {
     return (
-      <button disabled className='btn flex gap-2 cursor-wait'>
+      <button disabled className='btn flex gap-2 cursor-wait' type='submit'>
         <Spinner className='h-6 w-6' />
         Processing
       </button>
     );
   } else {
-    return <button className='btn'>{text}</button>;
+    return (
+      <button className='btn' type='submit'>
+        {text}
+      </button>
+    );
   }
 };
 

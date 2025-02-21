@@ -33,7 +33,7 @@ const FileUploadBox = ({ src }) => {
             <img
               src={image}
               alt='Uploaded'
-              className='w-full h-full object-cover rounded-lg'
+              className='w-full h-full object-contain rounded-lg'
             />
             <button
               onClick={handleRemove}

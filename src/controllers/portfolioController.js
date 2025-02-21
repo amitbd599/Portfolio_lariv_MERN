@@ -38,7 +38,7 @@ exports.getAllPortfolio = async (req, res) => {
   try {
     let project = {
       $project: {
-        _id: 0,
+        _id: 1,
         title: 1,
         category: 1,
         link: 1,

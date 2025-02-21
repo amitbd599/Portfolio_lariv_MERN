@@ -1,8 +1,36 @@
+import { useEffect, useRef } from "react";
 import { FaPenToSquare, FaRegTrashCan } from "react-icons/fa6";
+import { DeleteAlert } from "../../../helper/helper";
+import serviceStore from "../../../store/serviceStore";
+import Skeleton from "react-loading-skeleton";
+import { Link } from "react-router-dom";
+import LoadingBar from "react-top-loading-bar";
 
 const AllService = () => {
+  const loadingBarRef = useRef(null);
+  let { allService, getAllServiceRequest, deleteServiceRequest } =
+    serviceStore();
+
+  useEffect(() => {
+    loadingBarRef.current.continuousStart();
+    (async () => {
+      await getAllServiceRequest();
+      loadingBarRef.current.complete();
+    })();
+  }, [getAllServiceRequest]);
+
+  //! delete file
+  let deleteAdvantages = async (id) => {
+    DeleteAlert(deleteServiceRequest, id).then(async (res) => {
+      if (res) {
+        await getAllServiceRequest();
+      }
+    });
+  };
+
   return (
     <div>
+      <LoadingBar color='#FF014F' ref={loadingBarRef} height={2} />
       <div>
         <h2 className='text-4xl font-extrabold leading-none tracking-tight text-gray-900'>
           All Service
@@ -29,27 +57,55 @@ const AllService = () => {
             </tr>
           </thead>
           <tbody className='divide-y divide-gray-100 border-t border-gray-100'>
-            <tr className='hover:bg-gray-50'>
-              <td className='px-6 py-4'>
-                <img
-                  src='https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
-                  alt='Placeholder'
-                  className='h-[60px] w-[60px] object-cover rounded-lg'
-                />
-              </td>
-              <td className='px-6 py-4'>Institution</td>
+            {allService === null ? (
+              <>
+                {[...Array(6)].map((item, index) => (
+                  <tr key={index} className='hover:bg-gray-50'>
+                    <td className='px-6 py-4'>
+                      <Skeleton count={1} />
+                    </td>
+                    <td className='px-6 py-4'>
+                      <Skeleton count={1} />
+                    </td>
+                    <td className='px-6 py-4'>
+                      <Skeleton count={1} />
+                    </td>
+                    <td className='px-6 py-4'>
+                      <Skeleton count={1} />
+                    </td>
+                  </tr>
+                ))}
+              </>
+            ) : (
+              <>
+                {allService.map((item, index) => (
+                  <tr key={index} className='hover:bg-gray-50'>
+                    <td className='px-6 py-4'>
+                      <img
+                        src={`/api/v1/get-single-file/${item?.img}`}
+                        alt='Placeholder'
+                        className='h-[60px] w-[60px] object-cover rounded-lg'
+                      />
+                    </td>
+                    <td className='px-6 py-4'>{item?.title}</td>
 
-              <td className='px-6 py-4'>
-                <div className='flex justify-end gap-2'>
-                  <button className='p-1'>
-                    <FaRegTrashCan className='text-[18px]' />
-                  </button>
-                  <button className='p-1'>
-                    <FaPenToSquare className='text-[18px]' />
-                  </button>
-                </div>
-              </td>
-            </tr>
+                    <td className='px-6 py-4'>
+                      <div className='flex justify-end gap-2'>
+                        <button
+                          className='p-1'
+                          onClick={() => deleteAdvantages(item?._id)}
+                        >
+                          <FaRegTrashCan className='text-[18px]' />
+                        </button>
+                        <Link to={`/edit-service/${item?._id}`} className='p-1'>
+                          <FaPenToSquare className='text-[18px]' />
+                        </Link>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </>
+            )}
           </tbody>
         </table>
       </div>

@@ -4,24 +4,41 @@ import FileUploadBox from "../../../common/FileUploadBox";
 import SubmitButton from "../../../common/SubmitButton";
 import portfolioStore from "../../../store/portfolioStore";
 import fileStore from "../../../store/fileStore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 
-const CreatePortfolio = () => {
-  let { createPortfolioRequest, isFormSubmit } = portfolioStore();
+const EditPortfolio = () => {
+  let {
+    updatePortfolioRequest,
+    isFormSubmit,
+    singlePortfolioRequest,
+    singlePortfolio,
+  } = portfolioStore();
   let { fileUploadRequest, rowFile } = fileStore();
   let navigate = useNavigate();
+
+  let params = useParams();
+
+  useEffect(() => {
+    (async () => {
+      await singlePortfolioRequest(params.id);
+    })();
+  }, [params.id, singlePortfolioRequest]);
+
+  console.log(singlePortfolio);
+
   return (
     <div>
       <div>
         <h2 className='text-4xl font-extrabold leading-none tracking-tight text-gray-900'>
-          Create Portfolio
+          Edit Portfolio
         </h2>
       </div>
       <Formik
         initialValues={{
-          title: "",
-          category: "",
-          link: "",
+          title: singlePortfolio?.title,
+          category: singlePortfolio?.category,
+          link: singlePortfolio?.link,
         }}
         enableReinitialize={true}
         validationSchema={Yup.object({
@@ -30,19 +47,40 @@ const CreatePortfolio = () => {
           category: Yup.string().min(6, "Too short").required("Required"),
         })}
         onSubmit={async (values, { setSubmitting }) => {
+          // if (rowFile !== null) {
+          //   let filePath = await fileUploadRequest(rowFile);
+          //   let result = await createPortfolioRequest({
+          //     ...values,
+          //     img: filePath,
+          //   });
+
+          // if (result) {
+          //   setSubmitting(false);
+          //   navigate("/all-portfolio");
+          // }
+          // } else {
+          //   await createPortfolioRequest(values);
+          // }
+
           if (rowFile !== null) {
             let filePath = await fileUploadRequest(rowFile);
-            let result = await createPortfolioRequest({
+            let result = await updatePortfolioRequest(params.id, {
               ...values,
               img: filePath,
             });
-
             if (result) {
               setSubmitting(false);
               navigate("/all-portfolio");
             }
           } else {
-            await createPortfolioRequest(values);
+            let result = await updatePortfolioRequest(params.id, {
+              ...values,
+              img: singlePortfolio?.img,
+            });
+            if (result) {
+              setSubmitting(false);
+              navigate("/all-portfolio");
+            }
           }
         }}
       >
@@ -98,7 +136,7 @@ const CreatePortfolio = () => {
                 <div>
                   {/* SubmitButton */}
                   <SubmitButton
-                    text='Create Portfolio'
+                    text='Edit Portfolio'
                     type='submit'
                     disabled={isSubmitting}
                     isFormSubmit={isFormSubmit}
@@ -110,26 +148,9 @@ const CreatePortfolio = () => {
                   <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
                     Image
                   </label>
-                  {/* <div className='w-full'>
-                <div className='relative  h-[226px] rounded-lg border-dashed border-2 border-blue-700 bg-gray-100 flex justify-center items-center'>
-                  <div className='absolute'>
-                    <div className='flex flex-col items-center'>
-                      <i className='fa fa-folder-open fa-4x text-blue-700' />
-                      <span className='block text-gray-400 font-normal'>
-                        Attach you files here
-                      </span>
-                    </div>
-                  </div>
-                  <input
-                    type='file'
-                    className='h-full w-full opacity-0'
-                    name=''
-                  />
-                </div>
-              </div> */}
 
                   {/* FileUploadBox */}
-                  <FileUploadBox />
+                  <FileUploadBox src={singlePortfolio?.img} />
                 </div>
               </div>
             </div>
@@ -140,4 +161,4 @@ const CreatePortfolio = () => {
   );
 };
 
-export default CreatePortfolio;
+export default EditPortfolio;

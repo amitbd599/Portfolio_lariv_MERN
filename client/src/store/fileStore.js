@@ -8,7 +8,7 @@ const fileStore = create((set) => ({
     try {
       const formData = new FormData();
       formData.append("file", file);
-      let result = await axios.post(`api/v1/upload-file`, formData, {
+      let result = await axios.post(`/api/v1/upload-file`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       if (result.data.success === true) {

@@ -2,47 +2,66 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import FileUploadBox from "../../../common/FileUploadBox";
 import SubmitButton from "../../../common/SubmitButton";
-import portfolioStore from "../../../store/portfolioStore";
 import fileStore from "../../../store/fileStore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import serviceStore from "../../../store/serviceStore";
 
-const CreatePortfolio = () => {
-  let { createPortfolioRequest, isFormSubmit } = portfolioStore();
+const EditService = () => {
+  let {
+    updateServiceRequest,
+    isFormSubmit,
+    singleServiceRequest,
+    singleService,
+  } = serviceStore();
   let { fileUploadRequest, rowFile } = fileStore();
   let navigate = useNavigate();
+
+  let params = useParams();
+
+  useEffect(() => {
+    (async () => {
+      await singleServiceRequest(params.id);
+    })();
+  }, [params.id, singleServiceRequest]);
+
   return (
     <div>
       <div>
         <h2 className='text-4xl font-extrabold leading-none tracking-tight text-gray-900'>
-          Create Portfolio
+          Edit Service
         </h2>
       </div>
       <Formik
         initialValues={{
-          title: "",
-          category: "",
-          link: "",
+          title: singleService?.title,
+          description: singleService?.description,
         }}
         enableReinitialize={true}
         validationSchema={Yup.object({
           title: Yup.string().min(6, "Too short").required("Required"),
-          link: Yup.string().min(6, "Too short").required("Required"),
-          category: Yup.string().min(6, "Too short").required("Required"),
+          description: Yup.string().min(6, "Too short").required("Required"),
         })}
         onSubmit={async (values, { setSubmitting }) => {
           if (rowFile !== null) {
             let filePath = await fileUploadRequest(rowFile);
-            let result = await createPortfolioRequest({
+            let result = await updateServiceRequest(params.id, {
               ...values,
               img: filePath,
             });
-
             if (result) {
               setSubmitting(false);
-              navigate("/all-portfolio");
+              navigate("/all-service");
             }
           } else {
-            await createPortfolioRequest(values);
+            let result = await updateServiceRequest(params.id, {
+              ...values,
+              img: singleService?.img,
+            });
+            if (result) {
+              setSubmitting(false);
+              navigate("/all-service");
+            }
           }
         }}
       >
@@ -67,38 +86,25 @@ const CreatePortfolio = () => {
                 </div>
                 <div>
                   <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                    Category
+                    Description
                   </label>
                   <Field
-                    type='text'
-                    name='category'
+                    as='textarea'
+                    name='description'
+                    rows={6}
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3'
-                  />
+                  ></Field>
                   <ErrorMessage
-                    name='category'
+                    name='description'
                     component='div'
                     className='error text-red-400'
                   />
                 </div>
-                <div>
-                  <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                    Link
-                  </label>
-                  <Field
-                    type='text'
-                    name='link'
-                    className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3'
-                  />
-                  <ErrorMessage
-                    name='link'
-                    component='div'
-                    className='error text-red-400'
-                  />
-                </div>
+
                 <div>
                   {/* SubmitButton */}
                   <SubmitButton
-                    text='Create Portfolio'
+                    text='Edit Service'
                     type='submit'
                     disabled={isSubmitting}
                     isFormSubmit={isFormSubmit}
@@ -110,26 +116,9 @@ const CreatePortfolio = () => {
                   <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
                     Image
                   </label>
-                  {/* <div className='w-full'>
-                <div className='relative  h-[226px] rounded-lg border-dashed border-2 border-blue-700 bg-gray-100 flex justify-center items-center'>
-                  <div className='absolute'>
-                    <div className='flex flex-col items-center'>
-                      <i className='fa fa-folder-open fa-4x text-blue-700' />
-                      <span className='block text-gray-400 font-normal'>
-                        Attach you files here
-                      </span>
-                    </div>
-                  </div>
-                  <input
-                    type='file'
-                    className='h-full w-full opacity-0'
-                    name=''
-                  />
-                </div>
-              </div> */}
 
                   {/* FileUploadBox */}
-                  <FileUploadBox />
+                  <FileUploadBox src={singleService?.img} />
                 </div>
               </div>
             </div>
@@ -140,4 +129,4 @@ const CreatePortfolio = () => {
   );
 };
 
-export default CreatePortfolio;
+export default EditService;

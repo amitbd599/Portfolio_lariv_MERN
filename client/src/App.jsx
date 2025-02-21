@@ -33,6 +33,8 @@ import Login from "./pages/Login";
 import EditExperiencePage from "./dashboard/pages/EditExperiencePage";
 import EditEducationPage from "./dashboard/pages/EditEducationPage";
 import EditAdvantagesPage from "./dashboard/pages/EditAdvantagesPage";
+import EditPortfolioPage from "./dashboard/pages/EditPortfolioPage";
+import EditServicePage from "./dashboard/pages/EditServicePage";
 function App() {
   useEffect(() => {
     AOS.init({
@@ -101,14 +103,24 @@ function App() {
           element={<EditAdvantagesPage />}
         />
 
+        {/* portfolio */}
         <Route
           exact
           path='/create-portfolio'
           element={<CreatePortfolioPage />}
         />
         <Route exact path='/all-portfolio' element={<AllPortfolioPage />} />
+        <Route
+          exact
+          path='/edit-portfolio/:id'
+          element={<EditPortfolioPage />}
+        />
+
+        {/* service */}
         <Route exact path='/create-service' element={<CreateServicePage />} />
         <Route exact path='/all-service' element={<AllServicePage />} />
+        <Route exact path='/edit-service/:id' element={<EditServicePage />} />
+
         <Route
           exact
           path='/create-testimonial'

@@ -37,7 +37,7 @@ exports.getAllService = async (req, res) => {
   try {
     let project = {
       $project: {
-        _id: 0,
+        _id: 1,
         title: 1,
         description: 1,
         img: 1,
