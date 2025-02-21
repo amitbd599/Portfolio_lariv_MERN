@@ -2,9 +2,11 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import SubmitButton from "../../../common/SubmitButton";
 import advantagesStore from "../../../store/advantagesStore";
+import { useNavigate } from "react-router-dom";
 
 const CreateAdvantages = () => {
   let { createAdvantagesRequest, isFormSubmit } = advantagesStore();
+  let navigate = useNavigate();
   return (
     <div>
       <div>
@@ -26,10 +28,10 @@ const CreateAdvantages = () => {
           percent: Yup.string().min(6, "Too short").required("Required"),
           time: Yup.string().min(6, "Too short").required("Required"),
         })}
-        onSubmit={async (values, { setSubmitting, resetForm }) => {
+        onSubmit={async (values, { setSubmitting }) => {
           await createAdvantagesRequest(values);
           setSubmitting(false);
-          resetForm();
+          navigate("/all-advantages");
         }}
       >
         {({ isSubmitting }) => (

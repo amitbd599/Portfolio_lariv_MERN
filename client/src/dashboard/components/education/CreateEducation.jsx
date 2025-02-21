@@ -2,9 +2,11 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import SubmitButton from "../../../common/SubmitButton";
 import educationStore from "../../../store/educationStore";
+import { useNavigate } from "react-router-dom";
 
 const CreateEducation = () => {
   let { createEducationRequest, isFormSubmit } = educationStore();
+  let navigate = useNavigate();
   return (
     <div>
       <div>
@@ -27,10 +29,10 @@ const CreateEducation = () => {
           description: Yup.string().min(6, "Too short").required("Required"),
           time: Yup.string().min(6, "Too short").required("Required"),
         })}
-        onSubmit={async (values, { setSubmitting, resetForm }) => {
+        onSubmit={async (values, { setSubmitting }) => {
           await createEducationRequest(values);
           setSubmitting(false);
-          resetForm();
+          navigate("/all-education");
         }}
       >
         {({ isSubmitting }) => (

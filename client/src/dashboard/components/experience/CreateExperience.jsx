@@ -2,9 +2,11 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import experienceStore from "../../../store/experienceStore";
 import SubmitButton from "../../../common/SubmitButton";
+import { useNavigate } from "react-router-dom";
 
 const CreateExperience = () => {
   let { createExperienceRequest, isFormSubmit } = experienceStore();
+  let navigate = useNavigate();
   return (
     <div>
       <div>
@@ -26,10 +28,10 @@ const CreateExperience = () => {
           description: Yup.string().min(6, "Too short").required("Required"),
           time: Yup.string().min(6, "Too short").required("Required"),
         })}
-        onSubmit={async (values, { setSubmitting, resetForm }) => {
+        onSubmit={async (values, { setSubmitting }) => {
           await createExperienceRequest(values);
           setSubmitting(false);
-          resetForm();
+          navigate("/all-experience");
         }}
       >
         {({ isSubmitting }) => (
