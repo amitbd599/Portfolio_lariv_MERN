@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const CreateTestimonial = () => {
   let { createTestimonialRequest, isFormSubmit } = testimonialStore();
-  let { fileUploadRequest, rowFile } = fileStore();
+  let { fileUploadRequest, rowFile, rowFileSet } = fileStore();
   let navigate = useNavigate();
   return (
     <div>
@@ -39,6 +39,7 @@ const CreateTestimonial = () => {
 
             if (result) {
               setSubmitting(false);
+              rowFileSet(null);
               navigate("/all-testimonial");
             }
           } else {

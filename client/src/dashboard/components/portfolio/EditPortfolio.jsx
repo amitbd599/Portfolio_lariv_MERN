@@ -14,7 +14,7 @@ const EditPortfolio = () => {
     singlePortfolioRequest,
     singlePortfolio,
   } = portfolioStore();
-  let { fileUploadRequest, rowFile } = fileStore();
+  let { fileUploadRequest, rowFile, rowFileSet } = fileStore();
   let navigate = useNavigate();
 
   let params = useParams();
@@ -24,8 +24,6 @@ const EditPortfolio = () => {
       await singlePortfolioRequest(params.id);
     })();
   }, [params.id, singlePortfolioRequest]);
-
-  console.log(singlePortfolio);
 
   return (
     <div>
@@ -47,21 +45,6 @@ const EditPortfolio = () => {
           category: Yup.string().min(6, "Too short").required("Required"),
         })}
         onSubmit={async (values, { setSubmitting }) => {
-          // if (rowFile !== null) {
-          //   let filePath = await fileUploadRequest(rowFile);
-          //   let result = await createPortfolioRequest({
-          //     ...values,
-          //     img: filePath,
-          //   });
-
-          // if (result) {
-          //   setSubmitting(false);
-          //   navigate("/all-portfolio");
-          // }
-          // } else {
-          //   await createPortfolioRequest(values);
-          // }
-
           if (rowFile !== null) {
             let filePath = await fileUploadRequest(rowFile);
             let result = await updatePortfolioRequest(params.id, {
@@ -70,6 +53,7 @@ const EditPortfolio = () => {
             });
             if (result) {
               setSubmitting(false);
+              rowFileSet(null);
               navigate("/all-portfolio");
             }
           } else {
@@ -79,6 +63,7 @@ const EditPortfolio = () => {
             });
             if (result) {
               setSubmitting(false);
+              rowFileSet(null);
               navigate("/all-portfolio");
             }
           }

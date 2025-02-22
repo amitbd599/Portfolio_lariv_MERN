@@ -35,6 +35,7 @@ import EditEducationPage from "./dashboard/pages/EditEducationPage";
 import EditAdvantagesPage from "./dashboard/pages/EditAdvantagesPage";
 import EditPortfolioPage from "./dashboard/pages/EditPortfolioPage";
 import EditServicePage from "./dashboard/pages/EditServicePage";
+import EditTestimonialPage from "./dashboard/pages/EditTestimonialPage";
 function App() {
   useEffect(() => {
     AOS.init({
@@ -121,15 +122,27 @@ function App() {
         <Route exact path='/all-service' element={<AllServicePage />} />
         <Route exact path='/edit-service/:id' element={<EditServicePage />} />
 
+        {/* testimonial */}
         <Route
           exact
           path='/create-testimonial'
           element={<CreateTestimonialPage />}
         />
         <Route exact path='/all-testimonial' element={<AllTestimonialPage />} />
+        <Route
+          exact
+          path='/edit-testimonial/:id'
+          element={<EditTestimonialPage />}
+        />
+
+        {/* blog */}
         <Route exact path='/create-blog' element={<CreateBlogPage />} />
-        <Route exact path='/all-blog' element={<AllBlogPage />} />
+        <Route exact path='/all-blog/:pageNo' element={<AllBlogPage />} />
+
+        {/* inbox */}
         <Route exact path='/all-inbox' element={<AllInboxPage />} />
+
+        {/* profile */}
         <Route exact path='/edit-profile' element={<EditProfilePage />} />
       </Routes>
     </BrowserRouter>

@@ -38,7 +38,7 @@ exports.getAllTestimonial = async (req, res) => {
   try {
     let project = {
       $project: {
-        _id: 0,
+        _id: 1,
         clientName: 1,
         address: 1,
         img: 1,

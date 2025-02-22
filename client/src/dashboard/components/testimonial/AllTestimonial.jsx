@@ -1,8 +1,36 @@
+import { useEffect, useRef } from "react";
 import { FaPenToSquare, FaRegTrashCan } from "react-icons/fa6";
+import { DeleteAlert } from "../../../helper/helper";
+import LoadingBar from "react-top-loading-bar";
+import testimonialStore from "../../../store/testimonialStore";
+import { Link } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
 
 const AllTestimonial = () => {
+  const loadingBarRef = useRef(null);
+  let { allTestimonial, getAllTestimonialRequest, deleteTestimonialRequest } =
+    testimonialStore();
+
+  useEffect(() => {
+    loadingBarRef.current.continuousStart();
+    (async () => {
+      await getAllTestimonialRequest();
+      loadingBarRef.current.complete();
+    })();
+  }, [getAllTestimonialRequest]);
+
+  //! delete file
+  let deleteTestimonial = async (id) => {
+    DeleteAlert(deleteTestimonialRequest, id).then(async (res) => {
+      if (res) {
+        await getAllTestimonialRequest();
+      }
+    });
+  };
+
   return (
     <div>
+      <LoadingBar color='#FF014F' ref={loadingBarRef} height={2} />
       <div>
         <h2 className='text-4xl font-extrabold leading-none tracking-tight text-gray-900'>
           All Testimonial
@@ -32,28 +60,59 @@ const AllTestimonial = () => {
             </tr>
           </thead>
           <tbody className='divide-y divide-gray-100 border-t border-gray-100'>
-            <tr className='hover:bg-gray-50'>
-              <td className='px-6 py-4'>
-                <img
-                  src='https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
-                  alt='Placeholder'
-                  className='h-[60px] w-[60px] object-cover rounded-lg'
-                />
-              </td>
-              <td className='px-6 py-4'>Institution</td>
-              <td className='px-6 py-4'>Institution</td>
+            {allTestimonial === null ? (
+              <>
+                {[...Array(6)].map((item, index) => (
+                  <tr key={index} className='hover:bg-gray-50'>
+                    <td className='px-6 py-4'>
+                      <Skeleton count={1} />
+                    </td>
+                    <td className='px-6 py-4'>
+                      <Skeleton count={1} />
+                    </td>
+                    <td className='px-6 py-4'>
+                      <Skeleton count={1} />
+                    </td>
+                    <td className='px-6 py-4'>
+                      <Skeleton count={1} />
+                    </td>
+                  </tr>
+                ))}
+              </>
+            ) : (
+              <>
+                {allTestimonial.map((item, index) => (
+                  <tr key={index} className='hover:bg-gray-50'>
+                    <td className='px-6 py-4'>
+                      <img
+                        src={`/api/v1/get-single-file/${item?.img}`}
+                        alt='Placeholder'
+                        className='h-[60px] w-[60px] object-cover rounded-lg'
+                      />
+                    </td>
+                    <td className='px-6 py-4'>{item?.clientName}</td>
+                    <td className='px-6 py-4'>{item?.address}</td>
 
-              <td className='px-6 py-4'>
-                <div className='flex justify-end gap-2'>
-                  <button className='p-1'>
-                    <FaRegTrashCan className='text-[18px]' />
-                  </button>
-                  <button className='p-1'>
-                    <FaPenToSquare className='text-[18px]' />
-                  </button>
-                </div>
-              </td>
-            </tr>
+                    <td className='px-6 py-4'>
+                      <div className='flex justify-end gap-2'>
+                        <button
+                          className='p-1'
+                          onClick={() => deleteTestimonial(item?._id)}
+                        >
+                          <FaRegTrashCan className='text-[18px]' />
+                        </button>
+                        <Link
+                          to={`/edit-testimonial/${item?._id}`}
+                          className='p-1'
+                        >
+                          <FaPenToSquare className='text-[18px]' />
+                        </Link>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </>
+            )}
           </tbody>
         </table>
       </div>

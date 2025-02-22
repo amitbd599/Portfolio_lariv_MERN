@@ -146,7 +146,7 @@ const MasterLayout = ({ children }) => {
         },
         {
           name: "All",
-          path: "/all-blog",
+          path: "/all-blog/1",
           icon: <FaList />,
         },
       ],
@@ -162,7 +162,7 @@ const MasterLayout = ({ children }) => {
       menu.route.some((route) => route.path === location.pathname)
     );
     setOpenMenu(activeMenu ? activeMenu.name : null);
-  }, [location.pathname]);
+  }, []);
 
   const handleToggle = (menuName) => {
     setOpenMenu(openMenu === menuName ? null : menuName);
@@ -270,22 +270,23 @@ const MasterLayout = ({ children }) => {
                       {/* Parent Menu */}
                       <button
                         onClick={() => handleToggle(item.name)}
-                        className={`w-full text-left p-2 rounded-md transition ${
+                        className={`w-full text-left p-2 rounded-md transition flex items-center gap-1 ${
                           openMenu === item.name ? " font-bold" : ""
                         }  hover:bg-gray-300`}
                       >
+                        <FaRegCircleDot className='m-[5px] text-[16px]' />{" "}
                         {item.name}
                       </button>
 
                       {/* Submenu - Show only if active */}
                       {openMenu === item.name && (
-                        <div className='pl-2  rounded-md '>
+                        <div className='pl-[30px]  rounded-md '>
                           {item.route.map((subItem, subIndex) => (
                             <NavLink
                               key={subIndex}
                               to={subItem.path}
                               className={({ isActive }) =>
-                                `text-base text-gray-900 font-normal  rounded-lg flex gap-3 items-center mt-2 p-2 hover:bg-gray-100 group ${
+                                `text-base text-gray-900 font-normal  rounded-lg flex gap-2 items-center mt-2 p-2 hover:bg-gray-100 group ${
                                   isActive && "bg-gray-300 hover:bg-gray-300"
                                 }`
                               }

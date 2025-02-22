@@ -8,7 +8,7 @@ import serviceStore from "../../../store/serviceStore";
 
 const CreateService = () => {
   let { createServiceRequest, isFormSubmit } = serviceStore();
-  let { fileUploadRequest, rowFile } = fileStore();
+  let { fileUploadRequest, rowFile, rowFileSet } = fileStore();
   let navigate = useNavigate();
 
   return (
@@ -38,6 +38,7 @@ const CreateService = () => {
 
             if (result) {
               setSubmitting(false);
+              rowFileSet(null);
               navigate("/all-service");
             }
           } else {

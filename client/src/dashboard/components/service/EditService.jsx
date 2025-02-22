@@ -14,7 +14,7 @@ const EditService = () => {
     singleServiceRequest,
     singleService,
   } = serviceStore();
-  let { fileUploadRequest, rowFile } = fileStore();
+  let { fileUploadRequest, rowFile, rowFileSet } = fileStore();
   let navigate = useNavigate();
 
   let params = useParams();
@@ -51,6 +51,7 @@ const EditService = () => {
             });
             if (result) {
               setSubmitting(false);
+              rowFileSet(null);
               navigate("/all-service");
             }
           } else {
@@ -60,6 +61,7 @@ const EditService = () => {
             });
             if (result) {
               setSubmitting(false);
+              rowFileSet(null);
               navigate("/all-service");
             }
           }

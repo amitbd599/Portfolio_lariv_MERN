@@ -2,48 +2,70 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import FileUploadBox from "../../../common/FileUploadBox";
 import SubmitButton from "../../../common/SubmitButton";
-import portfolioStore from "../../../store/portfolioStore";
+import testimonialStore from "../../../store/testimonialStore";
 import fileStore from "../../../store/fileStore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 
-const CreatePortfolio = () => {
-  let { createPortfolioRequest, isFormSubmit } = portfolioStore();
+const EditTestimonial = () => {
+  let {
+    updateTestimonialRequest,
+    isFormSubmit,
+    singleTestimonialRequest,
+    singleTestimonial,
+  } = testimonialStore();
   let { fileUploadRequest, rowFile, rowFileSet } = fileStore();
   let navigate = useNavigate();
+
+  let params = useParams();
+
+  useEffect(() => {
+    (async () => {
+      await singleTestimonialRequest(params.id);
+    })();
+  }, [params.id, singleTestimonialRequest]);
+
   return (
     <div>
       <div>
         <h2 className='text-4xl font-extrabold leading-none tracking-tight text-gray-900'>
-          Create Portfolio
+          Edit Testimonial
         </h2>
       </div>
       <Formik
         initialValues={{
-          title: "",
-          category: "",
-          link: "",
+          clientName: singleTestimonial?.clientName,
+          address: singleTestimonial?.address,
+          reviewText: singleTestimonial?.reviewText,
         }}
         enableReinitialize={true}
         validationSchema={Yup.object({
-          title: Yup.string().min(6, "Too short").required("Required"),
-          link: Yup.string().min(6, "Too short").required("Required"),
-          category: Yup.string().min(6, "Too short").required("Required"),
+          clientName: Yup.string().min(6, "Too short").required("Required"),
+          address: Yup.string().min(6, "Too short").required("Required"),
+          reviewText: Yup.string().min(6, "Too short").required("Required"),
         })}
         onSubmit={async (values, { setSubmitting }) => {
           if (rowFile !== null) {
             let filePath = await fileUploadRequest(rowFile);
-            let result = await createPortfolioRequest({
+            let result = await updateTestimonialRequest(params.id, {
               ...values,
               img: filePath,
             });
-
             if (result) {
               setSubmitting(false);
               rowFileSet(null);
-              navigate("/all-portfolio");
+              navigate("/all-testimonial");
             }
           } else {
-            await createPortfolioRequest(values);
+            let result = await updateTestimonialRequest(params.id, {
+              ...values,
+              img: singleTestimonial?.img,
+            });
+            if (result) {
+              setSubmitting(false);
+              rowFileSet(null);
+              navigate("/all-testimonial");
+            }
           }
         }}
       >
@@ -53,53 +75,56 @@ const CreatePortfolio = () => {
               <div className='grid gap-6 mb-6 w-[70%]'>
                 <div>
                   <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                    Title
+                    Client Name
                   </label>
                   <Field
                     type='text'
-                    name='title'
+                    name='clientName'
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3'
                   />
                   <ErrorMessage
-                    name='title'
+                    name='clientName'
                     component='div'
                     className='error text-red-400'
                   />
                 </div>
                 <div>
                   <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                    Category
+                    Address
                   </label>
                   <Field
                     type='text'
-                    name='category'
+                    name='address'
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3'
                   />
                   <ErrorMessage
-                    name='category'
+                    name='address'
                     component='div'
                     className='error text-red-400'
                   />
                 </div>
                 <div>
                   <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
-                    Link
+                    Review Text
                   </label>
                   <Field
+                    rows={6}
                     type='text'
-                    name='link'
+                    as='textarea'
+                    name='reviewText'
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3'
                   />
                   <ErrorMessage
-                    name='link'
+                    name='reviewText'
                     component='div'
                     className='error text-red-400'
                   />
                 </div>
+
                 <div>
                   {/* SubmitButton */}
                   <SubmitButton
-                    text='Create Portfolio'
+                    text='Edit Testimonial'
                     type='submit'
                     disabled={isSubmitting}
                     isFormSubmit={isFormSubmit}
@@ -113,7 +138,7 @@ const CreatePortfolio = () => {
                   </label>
 
                   {/* FileUploadBox */}
-                  <FileUploadBox />
+                  <FileUploadBox src={singleTestimonial?.img} />
                 </div>
               </div>
             </div>
@@ -124,4 +149,4 @@ const CreatePortfolio = () => {
   );
 };
 
-export default CreatePortfolio;
+export default EditTestimonial;

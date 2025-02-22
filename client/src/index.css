@@ -102,6 +102,10 @@ Version      : 1.0.1
     position: fixed;
     z-index: 0;
   }
+  .ReactQuill__inner .ql-container {
+    height: 50vh;
+    overflow-y: auto;
+  }
 }
 
 /* Hide scrollbar for IE, Edge add Firefox */

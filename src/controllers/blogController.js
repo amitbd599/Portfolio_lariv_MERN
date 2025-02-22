@@ -71,7 +71,7 @@ exports.getAllBlog = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      data: result,
+      data: result[0],
     });
   } catch (e) {
     return res.status(500).json({
@@ -92,7 +92,7 @@ exports.getSingleBlog = async (req, res) => {
     };
     let project = {
       $project: {
-        _id: 0,
+        _id: 1,
         title: 1,
         category: 1,
         sortDescription: 1,

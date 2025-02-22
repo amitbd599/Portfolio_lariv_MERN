@@ -50,7 +50,7 @@ const fileStore = create((set) => ({
     }
   },
 
-  //! delete product api
+  //! delete file api
   deleteProductRequest: async (id, fileName) => {
     set({ isFormSubmit: true });
     try {
