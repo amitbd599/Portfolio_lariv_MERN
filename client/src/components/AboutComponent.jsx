@@ -8,7 +8,23 @@ import {
   FaUserTie,
 } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import experienceStore from "../store/experienceStore";
+import { useEffect } from "react";
+import Skeleton from "react-loading-skeleton";
+import educationStore from "../store/educationStore";
 const AboutComponent = () => {
+  let { getAllExperienceRequest, allExperience } = experienceStore();
+  let { getAllEducationRequest, allEducation } = educationStore();
+
+  useEffect(() => {
+    (async () => {
+      await getAllExperienceRequest();
+      await getAllEducationRequest();
+    })();
+  }, []);
+
+  console.log(allEducation);
+
   return (
     <section className='py-[30px] md:py-[80px]'>
       <div className='container'>
@@ -205,75 +221,66 @@ const AboutComponent = () => {
                 <div className='item relative grid gap-[40px] border-l-[2px] border-text pb-[16px] pl-[35px]'>
                   <FaGripfire className='absolute left-[-16px] top-[-25px] text-[30px] text-text' />
 
-                  <div>
-                    <p
-                      className='text-text'
-                      data-aos='fade-up'
-                      data-aos-delay='50'
-                    >
-                      2021 - Present
-                    </p>
-                    <h3
-                      className='mt-[10px] text-[20px] font-medium text-white md:text-[25px]'
-                      data-aos='fade-up'
-                      data-aos-delay='100'
-                    >
-                      Framer Designer & Developer
-                    </h3>
-                    <p
-                      className='mt-[5px] text-[18px] font-medium text-text'
-                      data-aos='fade-up'
-                      data-aos-delay='150'
-                    >
-                      Liza Yoolo ITC Company
-                    </p>
-                    <p
-                      className='mt-[15px] text-text'
-                      data-aos='fade-up'
-                      data-aos-delay='200'
-                    >
-                      Since starting my excursion as an independent creator
-                      almost quite a while back, I've accomplished remote work
-                      for organizations, counseled for new companies, and teamed
-                      up with capable individuals to make computerized items for
-                      both business and purchaser use.
-                    </p>
-                  </div>
-
-                  <div>
-                    <p
-                      className='text-text'
-                      data-aos='fade-up'
-                      data-aos-delay='50'
-                    >
-                      2016 - 2020
-                    </p>
-                    <h3
-                      className='mt-[10px] text-[20px] font-medium text-white md:text-[25px]'
-                      data-aos='fade-up'
-                      data-aos-delay='100'
-                    >
-                      Web Application Manager
-                    </h3>
-                    <p
-                      className='mt-[5px] text-[18px] font-medium text-text'
-                      data-aos='fade-up'
-                      data-aos-delay='150'
-                    >
-                      Ultra Luca Company
-                    </p>
-                    <p
-                      className='mt-[15px] text-text'
-                      data-aos='fade-up'
-                      data-aos-delay='200'
-                    >
-                      Since starting my excursion as an independent creator
-                      almost quite a while back, I've accomplished remote work
-                      for organizations, counseled for new companies, and teamed
-                      up with capable individuals to make computerized items for
-                      both business and purchaser use.
-                    </p>
-                  </div>
+                  {allExperience === null ? (
+                    <>
+                      {[...Array(2)].map((item, index) => (
+                        <div
+                          key={index}
+                          className='grid grid-flow-col gap-[30px]'
+                        >
+                          <p data-aos='fade-up' data-aos-delay='50'>
+                            <Skeleton
+                              count={5}
+                              height={12}
+                              style={{ background: "#ddd" }}
+                            />
+                          </p>
+                          <p data-aos='fade-up' data-aos-delay='50'>
+                            <Skeleton
+                              count={5}
+                              height={12}
+                              style={{ background: "#ddd" }}
+                            />
+                          </p>
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    <>
+                      {allExperience.map((item, index) => (
+                        <div key={index}>
+                          <p
+                            className='text-text'
+                            data-aos='fade-up'
+                            data-aos-delay='50'
+                          >
+                            {item?.time}
+                          </p>
+                          <h3
+                            className='mt-[10px] text-[20px] font-medium text-white md:text-[25px]'
+                            data-aos='fade-up'
+                            data-aos-delay='100'
+                          >
+                            {item?.title}
+                          </h3>
+                          <p
+                            className='mt-[5px] text-[18px] font-medium text-text'
+                            data-aos='fade-up'
+                            data-aos-delay='150'
+                          >
+                            {item?.subTitle}
+                          </p>
+                          <p
+                            className='mt-[15px] text-text'
+                            data-aos='fade-up'
+                            data-aos-delay='200'
+                          >
+                            {item?.description}
+                          </p>
+                        </div>
+                      ))}
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -291,75 +298,66 @@ const AboutComponent = () => {
                 <div className='item relative grid gap-[40px] border-l-[2px] border-text pb-[16px] pl-[35px]'>
                   <FaGripfire className='absolute left-[-16px] top-[-25px] text-[30px] text-text' />
 
-                  <div>
-                    <p
-                      className='text-text'
-                      data-aos='fade-up'
-                      data-aos-delay='100'
-                    >
-                      2021 - Present
-                    </p>
-                    <h3
-                      className='mt-[10px] text-[20px] font-medium text-white md:text-[25px]'
-                      data-aos='fade-up'
-                      data-aos-delay='150'
-                    >
-                      MBA
-                    </h3>
-                    <p
-                      className='mt-[5px] text-[18px] font-medium text-text'
-                      data-aos='fade-up'
-                      data-aos-delay='200'
-                    >
-                      University of Dhaka
-                    </p>
-                    <p
-                      className='mt-[15px] text-text'
-                      data-aos='fade-up'
-                      data-aos-delay='250'
-                    >
-                      Since starting my excursion as an independent creator
-                      almost quite a while back, I've accomplished remote work
-                      for organizations, counseled for new companies, and teamed
-                      up with capable individuals to make computerized items for
-                      both business and purchaser use.
-                    </p>
-                  </div>
-
-                  <div>
-                    <p
-                      className='text-text'
-                      data-aos='fade-up'
-                      data-aos-delay='50'
-                    >
-                      2016 - 2020
-                    </p>
-                    <h3
-                      className='mt-[10px] text-[20px] font-medium text-white md:text-[25px]'
-                      data-aos='fade-up'
-                      data-aos-delay='100'
-                    >
-                      BBA
-                    </h3>
-                    <p
-                      className='mt-[5px] text-[18px] font-medium text-text'
-                      data-aos='fade-up'
-                      data-aos-delay='150'
-                    >
-                      University of Dhaka
-                    </p>
-                    <p
-                      className='mt-[15px] text-text'
-                      data-aos='fade-up'
-                      data-aos-delay='200'
-                    >
-                      Since starting my excursion as an independent creator
-                      almost quite a while back, I've accomplished remote work
-                      for organizations, counseled for new companies, and teamed
-                      up with capable individuals to make computerized items for
-                      both business and purchaser use.
-                    </p>
-                  </div>
+                  {allEducation === null ? (
+                    <>
+                      {[...Array(2)].map((item, index) => (
+                        <div
+                          key={index}
+                          className='grid grid-flow-col gap-[30px]'
+                        >
+                          <p data-aos='fade-up' data-aos-delay='50'>
+                            <Skeleton
+                              count={5}
+                              height={12}
+                              style={{ background: "#ddd" }}
+                            />
+                          </p>
+                          <p data-aos='fade-up' data-aos-delay='50'>
+                            <Skeleton
+                              count={5}
+                              height={12}
+                              style={{ background: "#ddd" }}
+                            />
+                          </p>
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    <>
+                      {allEducation.map((item, index) => (
+                        <div key={index}>
+                          <p
+                            className='text-text'
+                            data-aos='fade-up'
+                            data-aos-delay='50'
+                          >
+                            {item?.time}
+                          </p>
+                          <h3
+                            className='mt-[10px] text-[20px] font-medium text-white md:text-[25px]'
+                            data-aos='fade-up'
+                            data-aos-delay='100'
+                          >
+                            {item?.title}
+                          </h3>
+                          <p
+                            className='mt-[5px] text-[18px] font-medium text-text'
+                            data-aos='fade-up'
+                            data-aos-delay='150'
+                          >
+                            {item?.institution}
+                          </p>
+                          <p
+                            className='mt-[15px] text-text'
+                            data-aos='fade-up'
+                            data-aos-delay='200'
+                          >
+                            {item?.description}
+                          </p>
+                        </div>
+                      ))}
+                    </>
+                  )}
                 </div>
               </div>
             </div>
