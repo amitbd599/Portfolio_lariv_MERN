@@ -39,7 +39,10 @@ const EditAdvantages = () => {
         validationSchema={Yup.object({
           subject: Yup.string().min(6, "Too short").required("Required"),
           position: Yup.string().min(6, "Too short").required("Required"),
-          percent: Yup.string().min(6, "Too short").required("Required"),
+          percent: Yup.string()
+            .min(1, "Too short")
+            .max(2, "Too long")
+            .required("Required"),
           time: Yup.string().min(6, "Too short").required("Required"),
         })}
         onSubmit={async (values, { setSubmitting }) => {

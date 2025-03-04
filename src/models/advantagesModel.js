@@ -14,7 +14,7 @@ const DataSchema = new mongoose.Schema(
     percent: {
       type: String,
       required: [true, "Percent cannot be empty!"],
-      minlength: [3, "Percent must be at least 3 characters long"],
+      minlength: [1, "Percent must be at least 1 characters long"],
     },
     time: {
       type: String,

@@ -12,14 +12,17 @@ import experienceStore from "../store/experienceStore";
 import { useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import educationStore from "../store/educationStore";
+import advantagesStore from "../store/advantagesStore";
 const AboutComponent = () => {
   let { getAllExperienceRequest, allExperience } = experienceStore();
   let { getAllEducationRequest, allEducation } = educationStore();
+  let { getAllAdvantagesRequest, allAdvantages } = advantagesStore();
 
   useEffect(() => {
     (async () => {
       await getAllExperienceRequest();
       await getAllEducationRequest();
+      await getAllAdvantagesRequest();
     })();
   }, []);
 
@@ -375,100 +378,83 @@ const AboutComponent = () => {
                 <div className='item relative grid gap-[40px] border-l-[2px] border-text pb-[16px] pl-[35px]'>
                   <FaGripfire className='absolute left-[-16px] top-[-25px] text-[30px] text-text' />
 
-                  <div>
-                    <p
-                      className='text-text'
-                      data-aos='fade-up'
-                      data-aos-delay='100'
-                    >
-                      2016 - 2020
-                    </p>
-                    <h3
-                      className='mt-[10px] text-[20px] font-medium text-white md:text-[25px]'
-                      data-aos='fade-up'
-                      data-aos-delay='150'
-                    >
-                      Figma
-                    </h3>
-                    <p
-                      className='mt-[5px] text-[18px] font-medium text-text'
-                      data-aos='fade-up'
-                      data-aos-delay='200'
-                    >
-                      UI/UX Design
-                    </p>
-                    <div className='mt-[20px] w-full'>
-                      <div
-                        className='mb-2 flex items-center justify-between gap-4'
-                        data-aos='fade-up'
-                        data-aos-delay='250'
-                      >
-                        <Typography
-                          className='text-[16px] font-medium text-white'
-                          variant='paragraph'
+                  {allAdvantages === null ? (
+                    <>
+                      {[...Array(2)].map((item, index) => (
+                        <div
+                          key={index}
+                          className='grid grid-flow-col gap-[30px]'
                         >
-                          Figma
-                        </Typography>
-                        <Typography className='text-white' variant='h6'>
-                          85%
-                        </Typography>
-                      </div>
-                      <Progress
-                        data-aos='fade-up'
-                        data-aos-delay='300'
-                        value={85}
-                        size='lg'
-                        className='progress border border-theme/20 bg-theme/10 p-1'
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <p
-                      className='text-text'
-                      data-aos='fade-up'
-                      data-aos-delay='100'
-                    >
-                      2016 - 2020
-                    </p>
-                    <h3
-                      className='mt-[10px] text-[20px] font-medium text-white md:text-[25px]'
-                      data-aos='fade-up'
-                      data-aos-delay='150'
-                    >
-                      NEXT Prisma Application
-                    </h3>
-                    <p
-                      className='mt-[5px] text-[18px] font-medium text-text'
-                      data-aos='fade-up'
-                      data-aos-delay='200'
-                    >
-                      Web Application Developer
-                    </p>
-                    <div className='mt-[20px] w-full'>
-                      <div
-                        className='mb-2 flex items-center justify-between gap-4'
-                        data-aos='fade-up'
-                        data-aos-delay='250'
-                      >
-                        <Typography
-                          className='text-[16px] font-medium text-white'
-                          variant='paragraph'
-                        >
-                          NEXT-JS
-                        </Typography>
-                        <Typography className='text-white' variant='h6'>
-                          95%
-                        </Typography>
-                      </div>
-                      <Progress
-                        data-aos='fade-up'
-                        data-aos-delay='300'
-                        value={95}
-                        size='lg'
-                        className='progress border border-theme/20 bg-theme/10 p-1'
-                      />
-                    </div>
-                  </div>
+                          <p data-aos='fade-up' data-aos-delay='50'>
+                            <Skeleton
+                              count={5}
+                              height={12}
+                              style={{ background: "#ddd" }}
+                            />
+                          </p>
+                          <p data-aos='fade-up' data-aos-delay='50'>
+                            <Skeleton
+                              count={5}
+                              height={12}
+                              style={{ background: "#ddd" }}
+                            />
+                          </p>
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    <>
+                      {allAdvantages.map((item, index) => (
+                        <div key={index}>
+                          <p
+                            className='text-text'
+                            data-aos='fade-up'
+                            data-aos-delay='100'
+                          >
+                            {item?.time}
+                          </p>
+                          <h3
+                            className='mt-[10px] text-[20px] font-medium text-white md:text-[25px]'
+                            data-aos='fade-up'
+                            data-aos-delay='150'
+                          >
+                            {item?.subject}
+                          </h3>
+                          <p
+                            className='mt-[5px] text-[18px] font-medium text-text'
+                            data-aos='fade-up'
+                            data-aos-delay='200'
+                          >
+                            {item?.position}
+                          </p>
+                          <div className='mt-[20px] w-full'>
+                            <div
+                              className='mb-2 flex items-center justify-between gap-4'
+                              data-aos='fade-up'
+                              data-aos-delay='250'
+                            >
+                              <Typography
+                                className='text-[16px] font-medium text-white'
+                                variant='paragraph'
+                              >
+                                {item?.subject}
+                              </Typography>
+                              <Typography className='text-white' variant='h6'>
+                                {item?.percent}%
+                              </Typography>
+                            </div>
+                            <Progress
+                              data-aos='fade-up'
+                              data-aos-delay='300'
+                              value={item?.percent}
+                              size='lg'
+                              className='progress border border-theme/20 bg-theme/10 p-1'
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  )}
                 </div>
               </div>
             </div>
