@@ -56,6 +56,11 @@ exports.getAllBlog = async (req, res) => {
         as: "comments",
       },
     };
+    let commentCount = {
+      $addFields: {
+        commentCount: { $size: "$comments" },
+      },
+    };
     const projectStage = {
       $project: {
         title: 1,
@@ -65,7 +70,7 @@ exports.getAllBlog = async (req, res) => {
         date: {
           $dateToString: { format: "%d-%m-%Y", date: "$createdAt" },
         },
-        ["comments._id"]: 1,
+        commentCount: 1,
       },
     };
 
@@ -73,7 +78,7 @@ exports.getAllBlog = async (req, res) => {
       $facet: {
         total: [{ $count: "count" }],
 
-        blog: [joinStage, projectStage, skipStage, limitStage],
+        blog: [joinStage, commentCount, projectStage, skipStage, limitStage],
       },
     };
 

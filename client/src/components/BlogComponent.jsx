@@ -99,7 +99,7 @@ const BlogComponent = () => {
                         <p className='mt-[20px] inline-block rounded-md bg-theme/10 p-[4px] text-sm text-theme'>
                           {item?.category}
                         </p>
-                        <Link to={"/blog-details"}>
+                        <Link to={`/blog-details/${item?._id}`}>
                           <h2 className='mt-[12px] text-[20px] font-semibold transition-all duration-300 hover:text-theme md:text-[24px]'>
                             {item?.title}
                           </h2>
@@ -122,7 +122,7 @@ const BlogComponent = () => {
                               <FaRegCommentDots className='text-base text-theme' />
                             </span>
                             <span className='text-sm text-text'>
-                              {item?.comments?.length || 0} Comments
+                              {item?.commentCount} Comments
                             </span>
                           </div>
                         </div>
@@ -137,7 +137,6 @@ const BlogComponent = () => {
           {/* pagination */}
           <div className='flex justify-center '>
             <div className='mt-[50px] '>
-              <span>Showing 1 to 9 of {total} entries</span>
               {total > 9 ? (
                 <div className='mt-4'>
                   <ReactPaginate

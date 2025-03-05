@@ -67,6 +67,22 @@ const blogStore = create((set) => ({
     }
   },
 
+  //! get-comment-by-blog
+  allComments: null,
+  totalComments: null,
+  allCommentsRequest: async (id) => {
+    try {
+      set({ allComments: null });
+      let res = await axios.get(`/api/v1/get-comment-by-blog/${id}`);
+
+      set({ allComments: res?.data?.data });
+      set({ totalComments: res?.data?.totalComments });
+    } catch (error) {
+      ErrorToast(error?.response?.data?.message);
+      return null;
+    }
+  },
+
   //! delete blog api
   deleteBlogRequest: async (id) => {
     set({ isFormSubmit: true });

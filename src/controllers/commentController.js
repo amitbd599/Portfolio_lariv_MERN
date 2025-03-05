@@ -65,14 +65,49 @@ exports.getCommentsByBlog = async (req, res) => {
       },
     };
 
-    const comments = await commentsModel.aggregate([
+    let totalReplies = {
+      $addFields: {
+        totalReplies: { $size: "$replies" },
+      },
+    };
+
+    let projectStage = {
+      $project: {
+        _id: 1,
+        blogId: 1,
+        parentId: 1,
+        text: 1,
+        userName: 1,
+        // replies: 1,
+        totalReplies: 1,
+        date: {
+          $dateToString: { format: "%d-%m-%Y", date: "$createdAt" },
+        },
+        ["replies.createdAt"]: {
+          $dateToString: { format: "%d-%m-%Y", date: "$createdAt" },
+        },
+        ["replies.userName"]: 1,
+        ["replies.commentText"]: 1,
+        ["replies.parentId"]: 1,
+        ["replies.blogId"]: 1,
+      },
+    };
+
+    const data = await commentsModel.aggregate([
       match,
       joinWithParentId,
       sort,
+      projectStage,
       repliesByCreatedAt,
+      totalReplies,
     ]);
 
-    res.status(200).json({ success: true, comments });
+    const totalComments = data.reduce(
+      (acc, comment) => acc + 1 + comment.totalReplies,
+      0
+    );
+
+    res.status(200).json({ success: true, data, totalComments });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }

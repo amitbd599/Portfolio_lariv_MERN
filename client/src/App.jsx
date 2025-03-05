@@ -55,7 +55,7 @@ function App() {
         <Route exact path='/service' element={<Service />} />
         <Route exact path='/portfolio' element={<Portfolio />} />
         <Route exact path='/blog/:pageNo' element={<Blog />} />
-        <Route exact path='/blog-details' element={<BlogDetails />} />
+        <Route exact path='/blog-details/:blogId' element={<BlogDetails />} />
         <Route exact path='/contact' element={<Contact />} />
         <Route exact path='/login' element={<Login />} />
         <Route exact path='*' element={<Error />} />
