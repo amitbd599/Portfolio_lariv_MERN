@@ -40,8 +40,6 @@ const AllBlog = () => {
     });
   };
 
-  console.log(allBlog);
-
   return (
     <div>
       <LoadingBar color='#FF014F' ref={loadingBarRef} height={2} />
@@ -129,7 +127,7 @@ const AllBlog = () => {
             )}
           </tbody>
         </table>
-        <div className='flex justify-center absolute bottom-[50px]'>
+        <div className='flex justify-center mb-[50px]'>
           <div className='mt-[50px] '>
             <span>Showing 1 to 10 of {total} entries</span>
             {total > 10 ? (

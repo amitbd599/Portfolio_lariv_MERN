@@ -1,8 +1,31 @@
 import { FaBlog, FaClockRotateLeft, FaRegCommentDots } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import BlogCardSkeleton from "../skeleton/BlogCardSkeleton";
+import blogStore from "../store/blogStore";
+import { useEffect } from "react";
+import ReactPaginate from "react-paginate";
 
 const BlogComponent = () => {
+  let { getAllBlogRequest, allBlog, total } = blogStore();
+  const params = useParams();
+  const navigate = useNavigate();
+  const showItem = 9;
+
+  useEffect(() => {
+    (async () => {
+      await getAllBlogRequest(showItem, 1);
+    })();
+  }, [getAllBlogRequest]);
+
+  //! handelPageClick
+  const handelPageClick = async (event) => {
+    let pageNo = event.selected;
+    await getAllBlogRequest(showItem, pageNo + 1);
+    navigate(`/blog/${pageNo + 1}`);
+  };
+
+  console.log(allBlog);
+
   return (
     <section className='py-[30px] md:py-[80px]'>
       <div className='container'>
@@ -42,338 +65,102 @@ const BlogComponent = () => {
 
         <div className='mt-[60px] md:mt-[80px]'>
           <div className='grid  gap-y-[30px] md:grid-cols-12  md:gap-x-[30px]'>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4 '
-              data-aos='fade-up'
-              data-aos-delay='100'
-            >
-              {/* <div className='group rounded-xl bg-card p-[25px]'>
-                <div className='h-[260px] w-full overflow-hidden rounded-2xl'>
-                  <img
-                    src='assets/images/blog/blog-1.png'
-                    alt='Lariv - React Portfolio Template'
-                    className='h-full w-full   object-cover transition-all duration-500 group-hover:scale-[110%]'
-                  />
-                </div>
-                <div>
-                  <p className='mt-[20px] inline-block rounded-md bg-theme/10 p-[4px] text-sm text-theme'>
-                    App Development
-                  </p>
-                  <Link to={"/blog-details"}>
-                    <h2 className='mt-[12px] text-[20px] font-semibold transition-all duration-300 hover:text-theme md:text-[24px]'>
-                      All that You Believe Should Realize About Making
-                    </h2>
-                  </Link>
+            {allBlog === null ? (
+              <>
+                {[...Array(6)].map((item, index) => (
+                  <div
+                    key={index}
+                    className='col-span-12 md:col-span-6 lg:col-span-4 '
+                    data-aos='fade-up'
+                    data-aos-delay='100'
+                  >
+                    <BlogCardSkeleton />
+                  </div>
+                ))}
+              </>
+            ) : (
+              <>
+                {allBlog.map((item, index) => (
+                  <div
+                    key={index}
+                    className='col-span-12 md:col-span-6 lg:col-span-4 '
+                    data-aos='fade-up'
+                    data-aos-delay='150'
+                  >
+                    <div className='group rounded-xl bg-card p-[25px]'>
+                      <div className='h-[260px] w-full overflow-hidden rounded-2xl'>
+                        <img
+                          src={`/api/v1/get-single-file/${item?.featureImg}`}
+                          alt='Lariv - React Portfolio Template'
+                          className='h-full w-full  object-cover transition-all duration-500 group-hover:scale-[110%]'
+                        />
+                      </div>
+                      <div>
+                        <p className='mt-[20px] inline-block rounded-md bg-theme/10 p-[4px] text-sm text-theme'>
+                          {item?.category}
+                        </p>
+                        <Link to={"/blog-details"}>
+                          <h2 className='mt-[12px] text-[20px] font-semibold transition-all duration-300 hover:text-theme md:text-[24px]'>
+                            {item?.title}
+                          </h2>
+                        </Link>
 
-                  <p className='mt-[14px] text-base text-text'>
-                    SASS is poised to revolutionize how businesses operate by,
-                    and scalable software platform.
-                  </p>
-                  <div className='mt-[20px] flex items-center gap-[20px]'>
-                    <div className='flex items-center gap-[10px]'>
-                      <span>
-                        <FaClockRotateLeft className='text-base text-theme' />
-                      </span>
-                      <span className='text-sm text-text'>
-                        September 16, 2023
-                      </span>
-                    </div>
-                    <div className='flex items-center gap-[10px]'>
-                      <span>
-                        <FaRegCommentDots className='text-base text-theme' />
-                      </span>
-                      <span className='text-sm text-text'>3 Comments</span>
+                        <p className='mt-[14px] text-base text-text'>
+                          {item?.sortDescription}
+                        </p>
+                        <div className='mt-[20px] flex items-center gap-[20px]'>
+                          <div className='flex items-center gap-[10px]'>
+                            <span>
+                              <FaClockRotateLeft className='text-base text-theme' />
+                            </span>
+                            <span className='text-sm text-text'>
+                              {item?.date}
+                            </span>
+                          </div>
+                          <div className='flex items-center gap-[10px]'>
+                            <span>
+                              <FaRegCommentDots className='text-base text-theme' />
+                            </span>
+                            <span className='text-sm text-text'>
+                              {item?.comments?.length || 0} Comments
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div> */}
-
-              <BlogCardSkeleton />
-            </div>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4 '
-              data-aos='fade-up'
-              data-aos-delay='150'
-            >
-              <div className='group rounded-xl bg-card p-[25px]'>
-                <div className='h-[260px] w-full overflow-hidden rounded-2xl'>
-                  <img
-                    src='assets/images/blog/blog-2.png'
-                    alt='Lariv - React Portfolio Template'
-                    className='h-full w-full  object-cover transition-all duration-500 group-hover:scale-[110%]'
-                  />
-                </div>
-                <div>
-                  <p className='mt-[20px] inline-block rounded-md bg-theme/10 p-[4px] text-sm text-theme'>
-                    App Development
-                  </p>
-                  <Link to={"/blog-details"}>
-                    <h2 className='mt-[12px] text-[20px] font-semibold transition-all duration-300 hover:text-theme md:text-[24px]'>
-                      All that You Believe Should Realize About Making
-                    </h2>
-                  </Link>
-
-                  <p className='mt-[14px] text-base text-text'>
-                    SASS is poised to revolutionize how businesses operate by,
-                    and scalable software platform.
-                  </p>
-                  <div className='mt-[20px] flex items-center gap-[20px]'>
-                    <div className='flex items-center gap-[10px]'>
-                      <span>
-                        <FaClockRotateLeft className='text-base text-theme' />
-                      </span>
-                      <span className='text-sm text-text'>
-                        September 16, 2023
-                      </span>
-                    </div>
-                    <div className='flex items-center gap-[10px]'>
-                      <span>
-                        <FaRegCommentDots className='text-base text-theme' />
-                      </span>
-                      <span className='text-sm text-text'>3 Comments</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4 '
-              data-aos='fade-up'
-              data-aos-delay='200'
-            >
-              <div className='group rounded-xl bg-card p-[25px]'>
-                <div className='h-[260px] w-full overflow-hidden rounded-2xl'>
-                  <img
-                    src='assets/images/blog/blog-3.png'
-                    alt='Lariv - React Portfolio Template'
-                    className='h-full w-full  object-cover transition-all duration-500 group-hover:scale-[110%]'
-                  />
-                </div>
-                <div>
-                  <p className='mt-[20px] inline-block rounded-md bg-theme/10 p-[4px] text-sm text-theme'>
-                    App Development
-                  </p>
-                  <Link to={"/blog-details"}>
-                    <h2 className='mt-[12px] text-[20px] font-semibold transition-all duration-300 hover:text-theme md:text-[24px]'>
-                      All that You Believe Should Realize About Making
-                    </h2>
-                  </Link>
-
-                  <p className='mt-[14px] text-base text-text'>
-                    SASS is poised to revolutionize how businesses operate by,
-                    and scalable software platform.
-                  </p>
-                  <div className='mt-[20px] flex items-center gap-[20px]'>
-                    <div className='flex items-center gap-[10px]'>
-                      <span>
-                        <FaClockRotateLeft className='text-base text-theme' />
-                      </span>
-                      <span className='text-sm text-text'>
-                        September 16, 2023
-                      </span>
-                    </div>
-                    <div className='flex items-center gap-[10px]'>
-                      <span>
-                        <FaRegCommentDots className='text-base text-theme' />
-                      </span>
-                      <span className='text-sm text-text'>3 Comments</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4 '
-              data-aos='fade-up'
-              data-aos-delay='100'
-            >
-              <div className='group rounded-xl bg-card p-[25px]'>
-                <div className='h-[260px] w-full overflow-hidden rounded-2xl'>
-                  <img
-                    src='assets/images/blog/blog-4.png'
-                    alt='Lariv - React Portfolio Template'
-                    className='h-full w-full  object-cover transition-all duration-500 group-hover:scale-[110%]'
-                  />
-                </div>
-                <div>
-                  <p className='mt-[20px] inline-block rounded-md bg-theme/10 p-[4px] text-sm text-theme'>
-                    App Development
-                  </p>
-                  <Link to={"/blog-details"}>
-                    <h2 className='mt-[12px] text-[20px] font-semibold transition-all duration-300 hover:text-theme md:text-[24px]'>
-                      All that You Believe Should Realize About Making
-                    </h2>
-                  </Link>
-
-                  <p className='mt-[14px] text-base text-text'>
-                    SASS is poised to revolutionize how businesses operate by,
-                    and scalable software platform.
-                  </p>
-                  <div className='mt-[20px] flex items-center gap-[20px]'>
-                    <div className='flex items-center gap-[10px]'>
-                      <span>
-                        <FaClockRotateLeft className='text-base text-theme' />
-                      </span>
-                      <span className='text-sm text-text'>
-                        September 16, 2023
-                      </span>
-                    </div>
-                    <div className='flex items-center gap-[10px]'>
-                      <span>
-                        <FaRegCommentDots className='text-base text-theme' />
-                      </span>
-                      <span className='text-sm text-text'>3 Comments</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4 '
-              data-aos='fade-up'
-              data-aos-delay='150'
-            >
-              <div className='group rounded-xl bg-card p-[25px]'>
-                <div className='h-[260px] w-full overflow-hidden rounded-2xl'>
-                  <img
-                    src='assets/images/blog/blog-5.png'
-                    alt='Lariv - React Portfolio Template'
-                    className='h-full w-full  object-cover transition-all duration-500 group-hover:scale-[110%]'
-                  />
-                </div>
-                <div>
-                  <p className='mt-[20px] inline-block rounded-md bg-theme/10 p-[4px] text-sm text-theme'>
-                    App Development
-                  </p>
-                  <Link to={"/blog-details"}>
-                    <h2 className='mt-[12px] text-[20px] font-semibold transition-all duration-300 hover:text-theme md:text-[24px]'>
-                      All that You Believe Should Realize About Making
-                    </h2>
-                  </Link>
-
-                  <p className='mt-[14px] text-base text-text'>
-                    SASS is poised to revolutionize how businesses operate by,
-                    and scalable software platform.
-                  </p>
-                  <div className='mt-[20px] flex items-center gap-[20px]'>
-                    <div className='flex items-center gap-[10px]'>
-                      <span>
-                        <FaClockRotateLeft className='text-base text-theme' />
-                      </span>
-                      <span className='text-sm text-text'>
-                        September 16, 2023
-                      </span>
-                    </div>
-                    <div className='flex items-center gap-[10px]'>
-                      <span>
-                        <FaRegCommentDots className='text-base text-theme' />
-                      </span>
-                      <span className='text-sm text-text'>3 Comments</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4 '
-              data-aos='fade-up'
-              data-aos-delay='200'
-            >
-              <div className='group rounded-xl bg-card p-[25px]'>
-                <div className='h-[260px] w-full overflow-hidden rounded-2xl'>
-                  <img
-                    src='assets/images/blog/blog-6.png'
-                    alt='Lariv - React Portfolio Template'
-                    className='h-full w-full object-cover transition-all duration-500 group-hover:scale-[110%]'
-                  />
-                </div>
-                <div>
-                  <p className='mt-[20px] inline-block rounded-md bg-theme/10 p-[4px] text-sm text-theme'>
-                    App Development
-                  </p>
-                  <Link to={"/blog-details"}>
-                    <h2 className='mt-[12px] text-[20px] font-semibold transition-all duration-300 hover:text-theme md:text-[24px]'>
-                      All that You Believe Should Realize About Making
-                    </h2>
-                  </Link>
-
-                  <p className='mt-[14px] text-base text-text'>
-                    SASS is poised to revolutionize how businesses operate by,
-                    and scalable software platform.
-                  </p>
-                  <div className='mt-[20px] flex items-center gap-[20px]'>
-                    <div className='flex items-center gap-[10px]'>
-                      <span>
-                        <FaClockRotateLeft className='text-base text-theme' />
-                      </span>
-                      <span className='text-sm text-text'>
-                        September 16, 2023
-                      </span>
-                    </div>
-                    <div className='flex items-center gap-[10px]'>
-                      <span>
-                        <FaRegCommentDots className='text-base text-theme' />
-                      </span>
-                      <span className='text-sm text-text'>3 Comments</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+                ))}
+              </>
+            )}
           </div>
 
           {/* pagination */}
-          <div className='mt-[60px]' data-aos='fade-up' data-aos-delay='100'>
-            <ul className=' flex justify-center space-x-4'>
-              <li className='group'>
-                <Link to={"/blog-details"} className='pagination'>
-                  <svg
-                    className='fill-white group-hover:fill-white'
-                    width={16}
-                    height={16}
-                    viewBox='0 0 16 16'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path d='M10.06 12L11 11.06L7.94667 8L11 4.94L10.06 4L6.06 8L10.06 12Z' />
-                  </svg>
-                </Link>
-              </li>
-              <li className='group'>
-                <Link to={"/blog-details"} className='pagination'>
-                  1
-                </Link>
-              </li>
-              <li className='group'>
-                <Link href='#' className='pagination'>
-                  2
-                </Link>
-              </li>
-              <li className='group'>
-                <Link to='#' className='pagination'>
-                  ...
-                </Link>
-              </li>
-              <li className='group'>
-                <Link to='#' className='pagination'>
-                  10
-                </Link>
-              </li>
-              <li className='group'>
-                <Link to='#' className='pagination'>
-                  <svg
-                    className='fill-white group-hover:fill-white'
-                    width={16}
-                    height={16}
-                    viewBox='0 0 16 16'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path d='M6.94 4L6 4.94L9.05333 8L6 11.06L6.94 12L10.94 8L6.94 4Z' />
-                  </svg>
-                </Link>
-              </li>
-            </ul>
+          <div className='flex justify-center '>
+            <div className='mt-[50px] '>
+              <span>Showing 1 to 9 of {total} entries</span>
+              {total > 9 ? (
+                <div className='mt-4'>
+                  <ReactPaginate
+                    className='flex gap-2'
+                    previousLabel='<'
+                    nextLabel='>'
+                    activeClassName='active '
+                    pageLinkClassName=' pagination'
+                    previousLinkClassName='pagination'
+                    nextLinkClassName='pagination'
+                    activeLinkClassName='bg-red'
+                    breakLabel='...'
+                    pageCount={total / showItem}
+                    initialPage={params.pageNo - 1}
+                    pageRangeDisplayed={2}
+                    onPageChange={handelPageClick}
+                    type='button'
+                  />
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
           </div>
         </div>
       </div>

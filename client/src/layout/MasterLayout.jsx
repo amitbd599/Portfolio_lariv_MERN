@@ -78,7 +78,7 @@ const MasterLayout = (props) => {
                       className={(navData) =>
                         navData.isActive ? "navActive" : "navNotActive"
                       }
-                      to={"/blog"}
+                      to={"/blog/1"}
                     >
                       Blog
                     </NavLink>
@@ -175,7 +175,7 @@ const MasterLayout = (props) => {
                         ? "inline-block py-[8px] text-theme "
                         : "inline-block py-[8px]  text-white transition-all duration-300 hover:text-theme"
                     }
-                    to={"/blog"}
+                    to={"/blog/1"}
                   >
                     Blog
                   </NavLink>

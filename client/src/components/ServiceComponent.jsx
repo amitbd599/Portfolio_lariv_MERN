@@ -9,7 +9,22 @@ import {
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import ServiceCardSkeleton from "../skeleton/ServiceCardSkeleton";
+import serviceStore from "../store/serviceStore";
+import { useEffect } from "react";
+import testimonialStore from "../store/testimonialStore";
 const ServiceComponent = () => {
+  let { getAllServiceRequest, allService } = serviceStore();
+  let { getAllTestimonialRequest, allTestimonial } = testimonialStore();
+
+  useEffect(() => {
+    (async () => {
+      await getAllServiceRequest();
+      await getAllTestimonialRequest();
+    })();
+  }, []);
+
+  console.log(allService);
+
   return (
     <section className='py-[30px] md:py-[80px]'>
       <div className='container'>
@@ -51,122 +66,49 @@ const ServiceComponent = () => {
 
         <div className='mt-[60px] md:mt-[80px]'>
           <div className='grid  gap-y-[60px] md:grid-cols-12  md:gap-x-[30px]'>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4'
-              data-aos='fade-up'
-              data-aos-delay='100'
-            >
-              {/* <div className="group rounded-2xl bg-btn p-[30px]">
-                <div>
-                  <FaBlackberry className="text-[60px] text-theme" />
-                </div>
-                <h2 className="pt-5 text-[20px] font-medium text-white md:text-[26px]">
-                  Good Business Stratagy
-                </h2>
-                <p className="mt-[10px] text-text">
-                  Counseled for new companies, and teamed up with capable
-                  individuals to make computerized items for both business and
-                  purchaser use.
-                </p>
-              </div> */}
-
-              <ServiceCardSkeleton />
-            </div>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4'
-              data-aos='fade-up'
-              data-aos-delay='150'
-            >
-              <div className='group rounded-2xl bg-btn p-[30px]'>
-                <div>
-                  <FaHtml5 className='text-[60px] text-theme' />
-                </div>
-                <h2 className='pt-5 text-[20px] font-medium text-white md:text-[26px]'>
-                  Website Development
-                </h2>
-                <p className='mt-[10px] text-text'>
-                  Counseled for new companies, and teamed up with capable
-                  individuals to make computerized items for both business and
-                  purchaser use.
-                </p>
-              </div>
-            </div>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4'
-              data-aos='fade-up'
-              data-aos-delay='200'
-            >
-              <div className='group rounded-2xl bg-btn p-[30px]'>
-                <div>
-                  <FaDeezer className='text-[60px] text-theme' />
-                </div>
-                <h2 className='pt-5 text-[20px] font-medium text-white md:text-[26px]'>
-                  Marketing & Reporting
-                </h2>
-                <p className='mt-[10px] text-text'>
-                  Counseled for new companies, and teamed up with capable
-                  individuals to make computerized items for both business and
-                  purchaser use.
-                </p>
-              </div>
-            </div>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4'
-              data-aos='fade-up'
-              data-aos-delay='100'
-            >
-              <div className='group rounded-2xl bg-btn p-[30px]'>
-                <div>
-                  <FaMobileScreen className='text-[60px] text-theme' />
-                </div>
-                <h2 className='pt-5 text-[20px] font-medium text-white md:text-[26px]'>
-                  Mobile App Development
-                </h2>
-                <p className='mt-[10px] text-text'>
-                  Counseled for new companies, and teamed up with capable
-                  individuals to make computerized items for both business and
-                  purchaser use.
-                </p>
-              </div>
-            </div>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4'
-              data-aos='fade-up'
-              data-aos-delay='150'
-            >
-              <div className='group rounded-2xl bg-btn p-[30px]'>
-                <div>
-                  <FaDigitalOcean className='text-[60px] text-theme' />
-                </div>
-                <h2 className='pt-5 text-[20px] font-medium text-white md:text-[26px]'>
-                  Digital Marketing
-                </h2>
-                <p className='mt-[10px] text-text'>
-                  Counseled for new companies, and teamed up with capable
-                  individuals to make computerized items for both business and
-                  purchaser use.
-                </p>
-              </div>
-            </div>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4'
-              data-aos='fade-up'
-              data-aos-delay='200'
-            >
-              <div className='group rounded-2xl bg-btn p-[30px]'>
-                <div>
-                  <FaUikit className='text-[60px] text-theme' />
-                </div>
-                <h2 className='pt-5 text-[20px] font-medium text-white md:text-[26px]'>
-                  UI/UX Design
-                </h2>
-                <p className='mt-[10px] text-text'>
-                  Counseled for new companies, and teamed up with capable
-                  individuals to make computerized items for both business and
-                  purchaser use.
-                </p>
-              </div>
-            </div>
+            {allService === null ? (
+              <>
+                {[...Array(6)].map((item, index) => (
+                  <div
+                    key={index}
+                    className='col-span-12 md:col-span-6 lg:col-span-4'
+                    data-aos='fade-up'
+                    data-aos-delay='100'
+                  >
+                    <ServiceCardSkeleton />
+                  </div>
+                ))}
+              </>
+            ) : (
+              <>
+                {allService.map((item, index) => (
+                  <div
+                    key={index}
+                    className='col-span-12 md:col-span-6 lg:col-span-4'
+                    data-aos='fade-up'
+                    data-aos-delay='200'
+                  >
+                    <div className='group rounded-2xl bg-btn p-[30px]'>
+                      <div>
+                        <div className='overflow-hidden rounded-2xl w-full h-[250px]'>
+                          <img
+                            src={`/api/v1/get-single-file/${item?.img}`}
+                            alt='Lariv - React Portfolio Template'
+                            className='w-full h-full object-cover transition-all duration-500 group-hover:scale-[110%]'
+                          />
+                        </div>
+                      </div>
+                      <h2 className='pt-5 text-[20px] font-medium text-white md:text-[26px] '>
+                        {item?.title}
+                      </h2>
+                      <p className='mt-[10px] text-text text-justify'>
+                        {item?.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         </div>
 
@@ -217,126 +159,37 @@ const ServiceComponent = () => {
                 },
               }}
             >
-              <SwiperSlide>
-                <div className=' divide-y divide-dashed divide-theme rounded-xl  bg-card px-[30px] py-[40px] shadow-none'>
-                  <p className='pb-[30px] text-[18px] italic text-text'>
-                    I recently had the pleasure of using LoraXD for my business,
-                    and I must say it has exceeded my expectations in every way
-                    possible.
-                  </p>
+              {allTestimonial === null ? (
+                <>Loading</>
+              ) : (
+                <>
+                  {allTestimonial.map((item, index) => (
+                    <SwiperSlide key={index}>
+                      <div className=' divide-y divide-dashed divide-theme rounded-xl  bg-card px-[30px] py-[40px] shadow-none'>
+                        <p className='pb-[30px] text-[18px] italic text-text'>
+                          {item?.reviewText}
+                        </p>
 
-                  <div className='flex items-center gap-4 pt-[30px]'>
-                    <div className='inline-block w-[80px] overflow-hidden rounded-full'>
-                      <img
-                        src='assets/images/user/user-1.png'
-                        alt='Lariv - React Portfolio Template'
-                      />
-                    </div>
-                    <div className='grid gap-[10px]'>
-                      <p className='text-base font-semibold text-white  lg:text-[24px]'>
-                        Larry N. Alexandre
-                      </p>
-                      <p>565 Snider Street Denver, CO 80202</p>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className=' divide-y divide-dashed divide-theme rounded-xl  bg-card px-[30px] py-[40px] shadow-none'>
-                  <p className='pb-[30px] text-[18px] italic text-text'>
-                    I recently had the pleasure of using LoraXD for my business,
-                    and I must say it has exceeded my expectations in every way
-                    possible.
-                  </p>
-
-                  <div className='flex items-center gap-4 pt-[30px]'>
-                    <div className='inline-block w-[80px] overflow-hidden rounded-full'>
-                      <img
-                        src='assets/images/user/user-2.png'
-                        alt='Lariv - React Portfolio Template'
-                      />
-                    </div>
-                    <div className='grid gap-[10px]'>
-                      <p className='text-base font-semibold text-white  lg:text-[24px]'>
-                        Larry N. Alexandre
-                      </p>
-                      <p>565 Snider Street Denver, CO 80202</p>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className=' divide-y divide-dashed divide-theme rounded-xl  bg-card px-[30px] py-[40px] shadow-none'>
-                  <p className='pb-[30px] text-[18px] italic text-text'>
-                    I recently had the pleasure of using LoraXD for my business,
-                    and I must say it has exceeded my expectations in every way
-                    possible.
-                  </p>
-
-                  <div className='flex items-center gap-4 pt-[30px]'>
-                    <div className='inline-block w-[80px] overflow-hidden rounded-full'>
-                      <img
-                        src='assets/images/user/user-3.png'
-                        alt='Lariv - React Portfolio Template'
-                      />
-                    </div>
-                    <div className='grid gap-[10px]'>
-                      <p className='text-base font-semibold text-white  lg:text-[24px]'>
-                        Larry N. Alexandre
-                      </p>
-                      <p>565 Snider Street Denver, CO 80202</p>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className=' divide-y divide-dashed divide-theme rounded-xl  bg-card px-[30px] py-[40px] shadow-none'>
-                  <p className='pb-[30px] text-[18px] italic text-text'>
-                    I recently had the pleasure of using LoraXD for my business,
-                    and I must say it has exceeded my expectations in every way
-                    possible.
-                  </p>
-
-                  <div className='flex items-center gap-4 pt-[30px]'>
-                    <div className='inline-block w-[80px] overflow-hidden rounded-full'>
-                      <img
-                        src='assets/images/user/user-4.png'
-                        alt='Lariv - React Portfolio Template'
-                      />
-                    </div>
-                    <div className='grid gap-[10px]'>
-                      <p className='text-base font-semibold text-white  lg:text-[24px]'>
-                        Larry N. Alexandre
-                      </p>
-                      <p>565 Snider Street Denver, CO 80202</p>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className=' divide-y divide-dashed divide-theme rounded-xl  bg-card px-[30px] py-[40px] shadow-none'>
-                  <p className='pb-[30px] text-[18px] italic text-text'>
-                    I recently had the pleasure of using LoraXD for my business,
-                    and I must say it has exceeded my expectations in every way
-                    possible.
-                  </p>
-
-                  <div className='flex items-center gap-4 pt-[30px]'>
-                    <div className='inline-block w-[80px] overflow-hidden rounded-full'>
-                      <img
-                        src='assets/images/user/user-5.png'
-                        alt='Lariv - React Portfolio Template'
-                      />
-                    </div>
-                    <div className='grid gap-[10px]'>
-                      <p className='text-base font-semibold text-white  lg:text-[24px]'>
-                        Larry N. Alexandre
-                      </p>
-                      <p>565 Snider Street Denver, CO 80202</p>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
+                        <div className='flex items-center gap-4 pt-[30px]'>
+                          <div className='inline-block w-[80px] h-[80px] overflow-hidden rounded-full'>
+                            <img
+                              className='w-full h-full object-cover'
+                              src={`/api/v1/get-single-file/${item?.img}`}
+                              alt='Lariv - React Portfolio Template'
+                            />
+                          </div>
+                          <div className='grid gap-[10px]'>
+                            <p className='text-base font-semibold text-white  lg:text-[24px]'>
+                              {item?.clientName}
+                            </p>
+                            <p>{item?.address}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </>
+              )}
             </Swiper>
           </div>
         </div>

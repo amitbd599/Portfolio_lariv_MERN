@@ -9,8 +9,10 @@ const ServiceCardSkeleton = () => {
           </div>
           <div className='col-span-6'>
             <Skeleton count={2} />
+            <Skeleton count={2} />
           </div>
           <div className='col-span-6'>
+            <Skeleton count={2} />
             <Skeleton count={2} />
           </div>
           <div className='col-span-12'>

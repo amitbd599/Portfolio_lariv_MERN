@@ -24,7 +24,7 @@ const EditAdvantages = () => {
     <div>
       <div>
         <h2 className='text-4xl font-extrabold leading-none tracking-tight text-gray-900'>
-          Edit Education
+          Edit Advantages
         </h2>
       </div>
 
@@ -119,7 +119,7 @@ const EditAdvantages = () => {
 
               {/* SubmitButton */}
               <SubmitButton
-                text='Update profile'
+                text='Update Advantages'
                 type='submit'
                 disabled={isSubmitting}
                 isFormSubmit={isFormSubmit}

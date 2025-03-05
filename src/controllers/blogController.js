@@ -48,6 +48,14 @@ exports.getAllBlog = async (req, res) => {
     const skipStage = { $skip: (pageNo - 1) * limit };
     const limitStage = { $limit: limit };
     const sort = { $sort: { createdAt: -1 } };
+    let joinStage = {
+      $lookup: {
+        from: "comments",
+        localField: "_id",
+        foreignField: "blogId",
+        as: "comments",
+      },
+    };
     const projectStage = {
       $project: {
         title: 1,
@@ -57,13 +65,15 @@ exports.getAllBlog = async (req, res) => {
         date: {
           $dateToString: { format: "%d-%m-%Y", date: "$createdAt" },
         },
+        ["comments._id"]: 1,
       },
     };
 
     const facet = {
       $facet: {
         total: [{ $count: "count" }],
-        blog: [projectStage, skipStage, limitStage],
+
+        blog: [joinStage, projectStage, skipStage, limitStage],
       },
     };
 
@@ -73,7 +83,7 @@ exports.getAllBlog = async (req, res) => {
       success: true,
       data: result[0],
     });
-  } catch (e) {
+  } catch (error) {
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",

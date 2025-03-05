@@ -1,9 +1,18 @@
-import React from "react";
+import { useEffect } from "react";
 import { FaCodeMerge } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import PortfolioCardSkeleton from "../skeleton/PortfolioCardSkeleton";
+import portfolioStore from "../store/portfolioStore";
 
 const PortfolioComponent = () => {
+  let { getAllPortfolioRequest, allPortfolio } = portfolioStore();
+
+  useEffect(() => {
+    (async () => {
+      await getAllPortfolioRequest();
+    })();
+  }, []);
+
   return (
     <section className='py-[30px] md:py-[80px]'>
       <div className='container'>
@@ -43,168 +52,55 @@ const PortfolioComponent = () => {
 
         <div className='mt-[60px] md:mt-[80px]'>
           <div className='grid  gap-y-[30px] md:grid-cols-12  md:gap-x-[30px]'>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4'
-              data-aos='fade-up'
-              data-aos-delay='200'
-            >
-              {/* <div className="group rounded-2xl bg-btn p-[30px] ">
-                <div className="overflow-hidden rounded-2xl">
-                  <img
-                    src="assets/images/projects/project-1.png"
-                    alt="Lariv - React Portfolio Template"
-                    className="w-full object-cover transition-all duration-500 group-hover:scale-[110%] "
-                  />
-                </div>
-                <div>
-                  <p className="mt-[16px] text-[14px] text-text">
-                    Mobile Application
-                  </p>
-                  <div className="portfolio-button-open cursor-pointer  text-white transition-all  duration-300 hover:text-theme">
-                    <Link to={"#"}>
-                      <h2 className="mt-[15px] text-[20px] font-medium capitalize md:text-[20px]">
-                        Minto - Ai Resume Builder Case Study- UI/UX Design
-                      </h2>
-                    </Link>
+            {allPortfolio === null ? (
+              <>
+                {[...Array(6)].map((item, index) => (
+                  <div
+                    key={index}
+                    className='col-span-12 md:col-span-6 lg:col-span-4'
+                    data-aos='fade-up'
+                    data-aos-delay='200'
+                  >
+                    <PortfolioCardSkeleton />
                   </div>
-                </div>
-              </div> */}
-
-              <PortfolioCardSkeleton />
-            </div>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4'
-              data-aos='fade-up'
-              data-aos-delay='250'
-            >
-              <div className='group rounded-2xl bg-btn p-[30px] '>
-                <div className='overflow-hidden rounded-2xl'>
-                  <img
-                    src='assets/images/projects/project-2.png'
-                    alt='Lariv - React Portfolio Template'
-                    className='w-full object-cover transition-all duration-500 group-hover:scale-[110%]'
-                  />
-                </div>
-                <div>
-                  <p className='mt-[16px] text-[14px] text-text'>
-                    Mobile Application
-                  </p>
-                  <div className='portfolio-button-open cursor-pointer  text-white transition-all  duration-300 hover:text-theme'>
-                    <Link to={"#"}>
-                      <h2 className='mt-[15px] text-[20px] font-medium capitalize md:text-[20px]'>
-                        Crypto & Stocks Wallet - UI/UX | Mobile App
-                      </h2>
-                    </Link>
+                ))}
+              </>
+            ) : (
+              <>
+                {allPortfolio.map((item, index) => (
+                  <div
+                    key={index}
+                    className='col-span-12 md:col-span-6 lg:col-span-4'
+                    data-aos='fade-up'
+                    data-aos-delay='300'
+                  >
+                    <div className='group rounded-2xl bg-btn p-[30px] '>
+                      <div className='overflow-hidden rounded-2xl w-full h-[250px]'>
+                        <img
+                          src={`/api/v1/get-single-file/${item?.img}`}
+                          alt='Lariv - React Portfolio Template'
+                          className='w-full h-full object-cover transition-all duration-500 group-hover:scale-[110%]'
+                        />
+                      </div>
+                      <div>
+                        <p className='mt-[16px] text-[14px] text-text'>
+                          {item?.category}
+                        </p>
+                        <div className='portfolio-button-open cursor-pointer  text-white transition-all  duration-300 hover:text-theme'>
+                          <Link
+                            to={item?.link}
+                            target='_blank'
+                            className='mt-[15px] text-[20px] font-medium capitalize md:text-[20px]'
+                          >
+                            {item?.title}
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4'
-              data-aos='fade-up'
-              data-aos-delay='300'
-            >
-              <div className='group rounded-2xl bg-btn p-[30px] '>
-                <div className='overflow-hidden rounded-2xl'>
-                  <img
-                    src='assets/images/projects/project-3.png'
-                    alt='Lariv - React Portfolio Template'
-                    className='w-full object-cover transition-all duration-500 group-hover:scale-[110%]'
-                  />
-                </div>
-                <div>
-                  <p className='mt-[16px] text-[14px] text-text'>
-                    Mobile Application
-                  </p>
-                  <div className='portfolio-button-open cursor-pointer  text-white transition-all  duration-300 hover:text-theme'>
-                    <Link to={"#"}>
-                      <h2 className='mt-[15px] text-[20px] font-medium capitalize md:text-[20px]'>
-                        E-commerce Dashboard Case Study application
-                      </h2>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4'
-              data-aos='fade-up'
-              data-aos-delay='200'
-            >
-              <div className='group rounded-2xl bg-btn p-[30px] '>
-                <div className='overflow-hidden rounded-2xl'>
-                  <img
-                    src='assets/images/projects/project-4.png'
-                    alt='Lariv - React Portfolio Template'
-                    className='w-full object-cover transition-all duration-500 group-hover:scale-[110%]'
-                  />
-                </div>
-                <div>
-                  <p className='mt-[16px] text-[14px] text-text'>
-                    Mobile Application
-                  </p>
-                  <div className='portfolio-button-open cursor-pointer  text-white transition-all  duration-300 hover:text-theme'>
-                    <Link to={"#"}>
-                      <h2 className='mt-[15px] text-[20px] font-medium capitalize md:text-[20px]'>
-                        Pry Finance CRM - Mobile App & UX UI Design
-                      </h2>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4'
-              data-aos='fade-up'
-              data-aos-delay='250'
-            >
-              <div className='group rounded-2xl bg-btn p-[30px] '>
-                <div className='overflow-hidden rounded-2xl'>
-                  <img
-                    src='assets/images/projects/project-5.png'
-                    alt='Lariv - React Portfolio Template'
-                    className='w-full object-cover transition-all duration-500 group-hover:scale-[110%]'
-                  />
-                </div>
-                <div>
-                  <p className='mt-[16px] text-[14px] text-text'>
-                    Mobile Application
-                  </p>
-                  <div className='portfolio-button-open cursor-pointer  text-white transition-all  duration-300 hover:text-theme'>
-                    <Link to={"#"}>
-                      <h2 className='mt-[15px] text-[20px] font-medium capitalize md:text-[20px]'>
-                        Citisum - Real Estate Dashboard Design application
-                      </h2>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className='col-span-12 md:col-span-6 lg:col-span-4'
-              data-aos='fade-up'
-              data-aos-delay='300'
-            >
-              <div className='group rounded-2xl bg-btn p-[30px] '>
-                <div className='overflow-hidden rounded-2xl'>
-                  <img
-                    src='assets/images/projects/project-6.png'
-                    alt='Lariv - React Portfolio Template'
-                    className='w-full object-cover transition-all duration-500 group-hover:scale-[110%]'
-                  />
-                </div>
-                <div>
-                  <p className='mt-[16px] text-[14px] text-text'>
-                    Mobile Application
-                  </p>
-                  <div className='portfolio-button-open cursor-pointer  text-white transition-all  duration-300 hover:text-theme'>
-                    <h2 className='mt-[15px] text-[20px] font-medium capitalize md:text-[20px]'>
-                      SmartLock - Branding & Smart Home UX UI Design
-                    </h2>
-                  </div>
-                </div>
-              </div>
-            </div>
+                ))}
+              </>
+            )}
           </div>
         </div>
       </div>
